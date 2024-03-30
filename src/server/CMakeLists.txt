@@ -7,6 +7,8 @@ add_library(server ssl_server.c)
 # 设置库的包含目录
 target_include_directories(server PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
+# ==============链接其他模块==================
+
 # 配置链接network库
 link_directories(../network)  # 在哪里查找库文件
 target_link_libraries(server PRIVATE network)

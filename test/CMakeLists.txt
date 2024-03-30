@@ -5,5 +5,5 @@ project(test)
 add_library(test test.c)
 
 # 设置库的包含目录
-target_include_directories(test PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(test PUBLIC ../test/)
 

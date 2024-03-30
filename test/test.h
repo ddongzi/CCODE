@@ -4,6 +4,10 @@
 
 #ifndef TEST_TEST_H
 #define TEST_TEST_H
+
+#include <stdio.h>
+#include <stdlib.h>
+
 #define TEST(name, comment) do { \
     printf("Running test: %s (%s)\n", #name, comment); \
     name();             \

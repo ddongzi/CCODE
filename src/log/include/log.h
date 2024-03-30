@@ -39,7 +39,7 @@
         if (level <= LOG_LEVEL) { \
             char time_buffer[26]; \
             CURRENT_TIME(time_buffer); \
-            printf("[%s] [%s:%d] [%s] " format "\n", time_buffer, CURRENT_FILE, __LINE__, LOG_LEVEL_STR(level), ##__VA_ARGS__); \
+            printf("[%s] [%s:%d] [%s] " format " \n", time_buffer, CURRENT_FILE, __LINE__, LOG_LEVEL_STR(level), ##__VA_ARGS__); \
         } \
     } while (0)
 
@@ -47,6 +47,7 @@
 #define LOG_ERROR(format, ...) LOG(LOG_LEVEL_ERROR, format, ##__VA_ARGS__)
 #define LOG_WARNING(format, ...) LOG(LOG_LEVEL_WARNING, format, ##__VA_ARGS__)
 #define LOG_INFO(format, ...) LOG(LOG_LEVEL_INFO, format, ##__VA_ARGS__)
+
 #define LOG_DEBUG(format, ...) LOG(LOG_LEVEL_DEBUG, format, ##__VA_ARGS__)
 
 #endif // LOG_LOG_H
