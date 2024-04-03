@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/network.dir/network.c.o CMakeFiles/network.dir/base_socket.c.o -o ../../../bin/network   -L/home/dong/ALLCODE/develop/library  -Wl,-rpath,/home/dong/ALLCODE/develop/library ../../../library/liblog.so 

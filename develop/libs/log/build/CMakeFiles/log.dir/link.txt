@@ -1,0 +1,1 @@
+/usr/bin/cc -fPIC -shared -Wl,-soname,liblog.so -o /home/dong/ALLCODE/develop/library/liblog.so CMakeFiles/log.dir/src/log.c.o 

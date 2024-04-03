@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "stdio.h": "c",
+        "client.h": "c",
+        "socket.h": "c",
+        "protocol_type.h": "c",
+        "ssl.h": "c",
+        "log.h": "c",
+        "time.h": "c"
+    }
+}
