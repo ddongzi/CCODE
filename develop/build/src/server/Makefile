@@ -117,42 +117,42 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-src/server/CMakeFiles/server.dir/rule:
-	cd /home/dong/ALLCODE/develop/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/server/CMakeFiles/server.dir/rule
-.PHONY : src/server/CMakeFiles/server.dir/rule
+src/server/CMakeFiles/ssl_server.dir/rule:
+	cd /home/dong/ALLCODE/develop/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/server/CMakeFiles/ssl_server.dir/rule
+.PHONY : src/server/CMakeFiles/ssl_server.dir/rule
 
 # Convenience name for target.
-server: src/server/CMakeFiles/server.dir/rule
-.PHONY : server
+ssl_server: src/server/CMakeFiles/ssl_server.dir/rule
+.PHONY : ssl_server
 
 # fast build rule for target.
-server/fast:
-	cd /home/dong/ALLCODE/develop/build && $(MAKE) $(MAKESILENT) -f src/server/CMakeFiles/server.dir/build.make src/server/CMakeFiles/server.dir/build
-.PHONY : server/fast
+ssl_server/fast:
+	cd /home/dong/ALLCODE/develop/build && $(MAKE) $(MAKESILENT) -f src/server/CMakeFiles/ssl_server.dir/build.make src/server/CMakeFiles/ssl_server.dir/build
+.PHONY : ssl_server/fast
 
-main.o: main.c.o
-.PHONY : main.o
+ssl_server.o: ssl_server.c.o
+.PHONY : ssl_server.o
 
 # target to build an object file
-main.c.o:
-	cd /home/dong/ALLCODE/develop/build && $(MAKE) $(MAKESILENT) -f src/server/CMakeFiles/server.dir/build.make src/server/CMakeFiles/server.dir/main.c.o
-.PHONY : main.c.o
+ssl_server.c.o:
+	cd /home/dong/ALLCODE/develop/build && $(MAKE) $(MAKESILENT) -f src/server/CMakeFiles/ssl_server.dir/build.make src/server/CMakeFiles/ssl_server.dir/ssl_server.c.o
+.PHONY : ssl_server.c.o
 
-main.i: main.c.i
-.PHONY : main.i
+ssl_server.i: ssl_server.c.i
+.PHONY : ssl_server.i
 
 # target to preprocess a source file
-main.c.i:
-	cd /home/dong/ALLCODE/develop/build && $(MAKE) $(MAKESILENT) -f src/server/CMakeFiles/server.dir/build.make src/server/CMakeFiles/server.dir/main.c.i
-.PHONY : main.c.i
+ssl_server.c.i:
+	cd /home/dong/ALLCODE/develop/build && $(MAKE) $(MAKESILENT) -f src/server/CMakeFiles/ssl_server.dir/build.make src/server/CMakeFiles/ssl_server.dir/ssl_server.c.i
+.PHONY : ssl_server.c.i
 
-main.s: main.c.s
-.PHONY : main.s
+ssl_server.s: ssl_server.c.s
+.PHONY : ssl_server.s
 
 # target to generate assembly for a file
-main.c.s:
-	cd /home/dong/ALLCODE/develop/build && $(MAKE) $(MAKESILENT) -f src/server/CMakeFiles/server.dir/build.make src/server/CMakeFiles/server.dir/main.c.s
-.PHONY : main.c.s
+ssl_server.c.s:
+	cd /home/dong/ALLCODE/develop/build && $(MAKE) $(MAKESILENT) -f src/server/CMakeFiles/ssl_server.dir/build.make src/server/CMakeFiles/ssl_server.dir/ssl_server.c.s
+.PHONY : ssl_server.c.s
 
 # Help Target
 help:
@@ -162,10 +162,10 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... server"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... ssl_server"
+	@echo "... ssl_server.o"
+	@echo "... ssl_server.i"
+	@echo "... ssl_server.s"
 .PHONY : help
 
 

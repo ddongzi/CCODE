@@ -11,6 +11,12 @@
 #include "ssl.h"
 #include <pthread.h>
 
+void print_ssl(ssl_header_t *header, ssl_body_t * body)
+{
+    LOG_INFO("SSL Header: Length=%u, Version=%u, Type=%u, Time=%ld, ", header->len, header->version, header->type, (long)header->time);
+    LOG_INFO("SSL Body: Length=%u, Data=%s\n", body->size, body->data);
+}
+
 void handle_request(void *arg)
 {
     socket_fd_t client_socket = (socket_fd_t)(intptr_t)arg;
@@ -25,14 +31,32 @@ void handle_request(void *arg)
         LOG_ERROR("alloc failed.");
         exit(EXIT_FAILURE);
     }
+    int ret = 0;
+    while (1) {
+        /* code */
+        size_t size = receive_data(client_socket, buffer, MAX_BUFFER_SIZE);
+        if (size == 0) {
+            LOG_INFO("Receive no data.");
+            continue;
+        }
+        LOG_DEBUG("read size %d,  body: len %u ", size, buffer[0]);
+        ret = fill_ssl_header(buffer, size, header_ptr);
+        if (ret != SUCCESS) {
+            LOG_ERROR("fill ssl header failed.");
+            continue;
+        }
+        body_ptr = (ssl_body_t * ) malloc( sizeof(ssl_body_t)+ header_ptr->len);
+        fill_ssl_body(buffer + HEADER_LENGTH_BYTE, header_ptr, body_ptr);
+        if (ret != SUCCESS) {
+            LOG_ERROR("fill ssl body failed.");
+            continue;
+        }
+        print_ssl(header_ptr, body_ptr);
+        free(body_ptr);
+    }
+    free(header_ptr);
+    close(client_socket);
 
-    size_t size = receive_data(client_socket, buffer, MAX_BUFFER_SIZE);
-    size_t header_size = fill_ssl_header(buffer, size, header_ptr);
-    body_ptr = (ssl_body_t * ) malloc( sizeof(ssl_body_t)+ header_ptr->len);
-    size_t body_size = fill_ssl_body(buffer, header_ptr, body_ptr);
-    LOG_INFO("header size %zu", header_size);
-
-    close_socket(client_socket);
 }
 
 int main(void )

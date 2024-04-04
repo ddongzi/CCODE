@@ -93,6 +93,8 @@ client_EXTERNAL_OBJECTS =
 ../bin/client: src/client/CMakeFiles/client.dir/main.c.o
 ../bin/client: src/client/CMakeFiles/client.dir/build.make
 ../bin/client: ../library/liblog.so
+../bin/client: ../library/libnetwork.so
+../bin/client: ../library/libssl.so
 ../bin/client: src/client/CMakeFiles/client.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/dong/ALLCODE/develop/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable ../../../bin/client"
 	cd /home/dong/ALLCODE/develop/build/src/client && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/client.dir/link.txt --verbose=$(VERBOSE)

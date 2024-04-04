@@ -1,54 +1,49 @@
-#ifndef LOG_LOG_H
-#define LOG_LOG_H
+/**
+ * Copyright (c) 2020 rxi
+ *
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the MIT license. See `log.c` for details.
+ */
 
-#include <stdlib.h>
+#ifndef LOG_H
+#define LOG_H
+
 #include <stdio.h>
+#include <stdarg.h>
+#include <stdbool.h>
 #include <time.h>
 
-#define LOG_LEVEL_NONE 0
-#define LOG_LEVEL_ERROR 1
-#define LOG_LEVEL_WARNING 2
-#define LOG_LEVEL_INFO 3
-#define LOG_LEVEL_DEBUG 4
+#define LOG_VERSION "0.1.0"
 
-// 默认日志级别为 INFO
-#ifndef LOG_LEVEL
-#define LOG_LEVEL LOG_LEVEL_INFO
+typedef struct {
+  va_list ap;
+  const char *fmt;
+  const char *file;
+  struct tm *time;
+  void *udata;
+  int line;
+  int level;
+} log_Event;
+
+typedef void (*log_LogFn)(log_Event *ev);
+typedef void (*log_LockFn)(bool lock, void *udata);
+
+enum { TRACE, DEBUG, INFO, WARN, ERROR, FATAL };
+
+#define LOG_TRACE(...) log_log(TRACE, __FILE__, __LINE__, __VA_ARGS__)
+#define LOG_DEBUG(...) log_log(DEBUG, __FILE__, __LINE__, __VA_ARGS__)
+#define LOG_INFO(...)  log_log(INFO,  __FILE__, __LINE__, __VA_ARGS__)
+#define LOG_WARN(...)  log_log(WARN,  __FILE__, __LINE__, __VA_ARGS__)
+#define LOG_ERROR(...) log_log(ERROR, __FILE__, __LINE__, __VA_ARGS__)
+#define LOG_FATAL(...) log_log(FATAL, __FILE__, __LINE__, __VA_ARGS__)
+
+const char* log_level_string(int level);
+void log_set_lock(log_LockFn fn, void *udata);
+void log_set_level(int level);
+void log_set_quiet(bool enable);
+int log_add_callback(log_LogFn fn, void *udata, int level);
+int log_add_fp(FILE *fp, int level);
+
+void log_log(int level, const char *file, int line, const char *fmt, ...);
+
 #endif
-
-// 定义日志级别对应的字符串表示
-#define LOG_LEVEL_STR(level) \
-    ((level == LOG_LEVEL_ERROR) ? "ERROR" : \
-    (level == LOG_LEVEL_WARNING) ? "WARNING" : \
-    (level == LOG_LEVEL_INFO) ? "INFO" : \
-    (level == LOG_LEVEL_DEBUG) ? "DEBUG" : "UNKNOWN")
-
-// 获取当前时间的宏
-#define CURRENT_TIME(buffer) \
-    do { \
-        time_t t = time(NULL); \
-        struct tm tm_info = *localtime(&t); \
-        strftime(buffer, 26, "%Y-%m-%d %H:%M:%S", &tm_info); \
-    } while(0)
-
-// 获取当前文件名的宏
-#define CURRENT_FILE __FILE__
-
-// 定义日志输出函数
-#define LOG(level, format, ...) \
-    do { \
-        if (level <= LOG_LEVEL) { \
-            char time_buffer[26]; \
-            CURRENT_TIME(time_buffer); \
-            printf("[%s] [%s:%d] [%s] " format " \n", time_buffer, CURRENT_FILE, __LINE__, LOG_LEVEL_STR(level), ##__VA_ARGS__); \
-        } \
-    } while (0)
-
-// 定义不同级别的日志输出宏
-#define LOG_ERROR(format, ...) LOG(LOG_LEVEL_ERROR, format, ##__VA_ARGS__)
-#define LOG_WARNING(format, ...) LOG(LOG_LEVEL_WARNING, format, ##__VA_ARGS__)
-#define LOG_INFO(format, ...) LOG(LOG_LEVEL_INFO, format, ##__VA_ARGS__)
-
-#define LOG_DEBUG(format, ...) LOG(LOG_LEVEL_DEBUG, format, ##__VA_ARGS__)
-
-#endif // LOG_LOG_H

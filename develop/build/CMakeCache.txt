@@ -264,13 +264,13 @@ log_IS_TOP_LEVEL:STATIC=OFF
 log_SOURCE_DIR:STATIC=/home/dong/ALLCODE/develop/libs/log
 
 //Value Computed by CMake
-network_BINARY_DIR:STATIC=/home/dong/ALLCODE/develop/build/src/network
+network_BINARY_DIR:STATIC=/home/dong/ALLCODE/develop/build/libs/network
 
 //Value Computed by CMake
 network_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
-network_SOURCE_DIR:STATIC=/home/dong/ALLCODE/develop/src/network
+network_SOURCE_DIR:STATIC=/home/dong/ALLCODE/develop/libs/network
 
 //Value Computed by CMake
 server_BINARY_DIR:STATIC=/home/dong/ALLCODE/develop/build/src/server
@@ -282,13 +282,16 @@ server_IS_TOP_LEVEL:STATIC=OFF
 server_SOURCE_DIR:STATIC=/home/dong/ALLCODE/develop/src/server
 
 //Value Computed by CMake
-ssl_BINARY_DIR:STATIC=/home/dong/ALLCODE/develop/build/src/ssl
+ssl_BINARY_DIR:STATIC=/home/dong/ALLCODE/develop/build/libs/ssl
 
 //Value Computed by CMake
 ssl_IS_TOP_LEVEL:STATIC=OFF
 
+//Dependencies for the target
+ssl_LIB_DEPENDS:STATIC=general;gnutls;
+
 //Value Computed by CMake
-ssl_SOURCE_DIR:STATIC=/home/dong/ALLCODE/develop/src/ssl
+ssl_SOURCE_DIR:STATIC=/home/dong/ALLCODE/develop/libs/ssl
 
 //Value Computed by CMake
 test_BINARY_DIR:STATIC=/home/dong/ALLCODE/develop/build/libs/test

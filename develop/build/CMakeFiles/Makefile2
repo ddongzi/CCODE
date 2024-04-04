@@ -85,16 +85,22 @@ clean: libs/clean
 # Recursive "all" directory target.
 libs/all: libs/log/all
 libs/all: libs/test/all
+libs/all: libs/ssl/all
+libs/all: libs/network/all
 .PHONY : libs/all
 
 # Recursive "preinstall" directory target.
 libs/preinstall: libs/log/preinstall
 libs/preinstall: libs/test/preinstall
+libs/preinstall: libs/ssl/preinstall
+libs/preinstall: libs/network/preinstall
 .PHONY : libs/preinstall
 
 # Recursive "clean" directory target.
 libs/clean: libs/log/clean
 libs/clean: libs/test/clean
+libs/clean: libs/ssl/clean
+libs/clean: libs/network/clean
 .PHONY : libs/clean
 
 #=============================================================================
@@ -111,6 +117,36 @@ libs/log/preinstall:
 # Recursive "clean" directory target.
 libs/log/clean: libs/log/CMakeFiles/log.dir/clean
 .PHONY : libs/log/clean
+
+#=============================================================================
+# Directory level rules for directory libs/network
+
+# Recursive "all" directory target.
+libs/network/all: libs/network/CMakeFiles/network.dir/all
+.PHONY : libs/network/all
+
+# Recursive "preinstall" directory target.
+libs/network/preinstall:
+.PHONY : libs/network/preinstall
+
+# Recursive "clean" directory target.
+libs/network/clean: libs/network/CMakeFiles/network.dir/clean
+.PHONY : libs/network/clean
+
+#=============================================================================
+# Directory level rules for directory libs/ssl
+
+# Recursive "all" directory target.
+libs/ssl/all: libs/ssl/CMakeFiles/ssl.dir/all
+.PHONY : libs/ssl/all
+
+# Recursive "preinstall" directory target.
+libs/ssl/preinstall:
+.PHONY : libs/ssl/preinstall
+
+# Recursive "clean" directory target.
+libs/ssl/clean: libs/ssl/CMakeFiles/ssl.dir/clean
+.PHONY : libs/ssl/clean
 
 #=============================================================================
 # Directory level rules for directory libs/test
@@ -131,31 +167,25 @@ libs/test/clean: libs/test/CMakeFiles/test.dir/clean
 # Directory level rules for directory src
 
 # Recursive "all" directory target.
-src/all: src/network/all
 src/all: src/client/all
 src/all: src/server/all
-src/all: src/ssl/all
 .PHONY : src/all
 
 # Recursive "preinstall" directory target.
-src/preinstall: src/network/preinstall
 src/preinstall: src/client/preinstall
 src/preinstall: src/server/preinstall
-src/preinstall: src/ssl/preinstall
 .PHONY : src/preinstall
 
 # Recursive "clean" directory target.
-src/clean: src/network/clean
 src/clean: src/client/clean
 src/clean: src/server/clean
-src/clean: src/ssl/clean
 .PHONY : src/clean
 
 #=============================================================================
 # Directory level rules for directory src/client
 
 # Recursive "all" directory target.
-src/client/all: src/client/CMakeFiles/client.dir/all
+src/client/all: src/client/CMakeFiles/ssl_client.dir/all
 .PHONY : src/client/all
 
 # Recursive "preinstall" directory target.
@@ -163,29 +193,14 @@ src/client/preinstall:
 .PHONY : src/client/preinstall
 
 # Recursive "clean" directory target.
-src/client/clean: src/client/CMakeFiles/client.dir/clean
+src/client/clean: src/client/CMakeFiles/ssl_client.dir/clean
 .PHONY : src/client/clean
-
-#=============================================================================
-# Directory level rules for directory src/network
-
-# Recursive "all" directory target.
-src/network/all: src/network/CMakeFiles/network.dir/all
-.PHONY : src/network/all
-
-# Recursive "preinstall" directory target.
-src/network/preinstall:
-.PHONY : src/network/preinstall
-
-# Recursive "clean" directory target.
-src/network/clean: src/network/CMakeFiles/network.dir/clean
-.PHONY : src/network/clean
 
 #=============================================================================
 # Directory level rules for directory src/server
 
 # Recursive "all" directory target.
-src/server/all: src/server/CMakeFiles/server.dir/all
+src/server/all: src/server/CMakeFiles/ssl_server.dir/all
 .PHONY : src/server/all
 
 # Recursive "preinstall" directory target.
@@ -193,23 +208,8 @@ src/server/preinstall:
 .PHONY : src/server/preinstall
 
 # Recursive "clean" directory target.
-src/server/clean: src/server/CMakeFiles/server.dir/clean
+src/server/clean: src/server/CMakeFiles/ssl_server.dir/clean
 .PHONY : src/server/clean
-
-#=============================================================================
-# Directory level rules for directory src/ssl
-
-# Recursive "all" directory target.
-src/ssl/all: src/ssl/CMakeFiles/ssl.dir/all
-.PHONY : src/ssl/all
-
-# Recursive "preinstall" directory target.
-src/ssl/preinstall:
-.PHONY : src/ssl/preinstall
-
-# Recursive "clean" directory target.
-src/ssl/clean: src/ssl/CMakeFiles/ssl.dir/clean
-.PHONY : src/ssl/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/main.dir
@@ -218,7 +218,7 @@ src/ssl/clean: src/ssl/CMakeFiles/ssl.dir/clean
 CMakeFiles/main.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dong/ALLCODE/develop/build/CMakeFiles --progress-num=5,6,7 "Built target main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dong/ALLCODE/develop/build/CMakeFiles --progress-num=3,4,5 "Built target main"
 .PHONY : CMakeFiles/main.dir/all
 
 # Build rule for subdir invocation for target.
@@ -238,108 +238,60 @@ CMakeFiles/main.dir/clean:
 .PHONY : CMakeFiles/main.dir/clean
 
 #=============================================================================
-# Target rules for target src/network/CMakeFiles/network.dir
+# Target rules for target src/client/CMakeFiles/ssl_client.dir
 
 # All Build rule for target.
-src/network/CMakeFiles/network.dir/all: libs/log/CMakeFiles/log.dir/all
-	$(MAKE) $(MAKESILENT) -f src/network/CMakeFiles/network.dir/build.make src/network/CMakeFiles/network.dir/depend
-	$(MAKE) $(MAKESILENT) -f src/network/CMakeFiles/network.dir/build.make src/network/CMakeFiles/network.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dong/ALLCODE/develop/build/CMakeFiles --progress-num=8,9,10 "Built target network"
-.PHONY : src/network/CMakeFiles/network.dir/all
+src/client/CMakeFiles/ssl_client.dir/all: libs/log/CMakeFiles/log.dir/all
+src/client/CMakeFiles/ssl_client.dir/all: libs/ssl/CMakeFiles/ssl.dir/all
+src/client/CMakeFiles/ssl_client.dir/all: libs/network/CMakeFiles/network.dir/all
+	$(MAKE) $(MAKESILENT) -f src/client/CMakeFiles/ssl_client.dir/build.make src/client/CMakeFiles/ssl_client.dir/depend
+	$(MAKE) $(MAKESILENT) -f src/client/CMakeFiles/ssl_client.dir/build.make src/client/CMakeFiles/ssl_client.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dong/ALLCODE/develop/build/CMakeFiles --progress-num=12,13 "Built target ssl_client"
+.PHONY : src/client/CMakeFiles/ssl_client.dir/all
 
 # Build rule for subdir invocation for target.
-src/network/CMakeFiles/network.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/dong/ALLCODE/develop/build/CMakeFiles 5
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/network/CMakeFiles/network.dir/all
+src/client/CMakeFiles/ssl_client.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/dong/ALLCODE/develop/build/CMakeFiles 10
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/client/CMakeFiles/ssl_client.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/dong/ALLCODE/develop/build/CMakeFiles 0
-.PHONY : src/network/CMakeFiles/network.dir/rule
+.PHONY : src/client/CMakeFiles/ssl_client.dir/rule
 
 # Convenience name for target.
-network: src/network/CMakeFiles/network.dir/rule
-.PHONY : network
+ssl_client: src/client/CMakeFiles/ssl_client.dir/rule
+.PHONY : ssl_client
 
 # clean rule for target.
-src/network/CMakeFiles/network.dir/clean:
-	$(MAKE) $(MAKESILENT) -f src/network/CMakeFiles/network.dir/build.make src/network/CMakeFiles/network.dir/clean
-.PHONY : src/network/CMakeFiles/network.dir/clean
+src/client/CMakeFiles/ssl_client.dir/clean:
+	$(MAKE) $(MAKESILENT) -f src/client/CMakeFiles/ssl_client.dir/build.make src/client/CMakeFiles/ssl_client.dir/clean
+.PHONY : src/client/CMakeFiles/ssl_client.dir/clean
 
 #=============================================================================
-# Target rules for target src/client/CMakeFiles/client.dir
+# Target rules for target src/server/CMakeFiles/ssl_server.dir
 
 # All Build rule for target.
-src/client/CMakeFiles/client.dir/all: libs/log/CMakeFiles/log.dir/all
-	$(MAKE) $(MAKESILENT) -f src/client/CMakeFiles/client.dir/build.make src/client/CMakeFiles/client.dir/depend
-	$(MAKE) $(MAKESILENT) -f src/client/CMakeFiles/client.dir/build.make src/client/CMakeFiles/client.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dong/ALLCODE/develop/build/CMakeFiles --progress-num=1,2 "Built target client"
-.PHONY : src/client/CMakeFiles/client.dir/all
+src/server/CMakeFiles/ssl_server.dir/all: libs/log/CMakeFiles/log.dir/all
+src/server/CMakeFiles/ssl_server.dir/all: libs/ssl/CMakeFiles/ssl.dir/all
+src/server/CMakeFiles/ssl_server.dir/all: libs/network/CMakeFiles/network.dir/all
+	$(MAKE) $(MAKESILENT) -f src/server/CMakeFiles/ssl_server.dir/build.make src/server/CMakeFiles/ssl_server.dir/depend
+	$(MAKE) $(MAKESILENT) -f src/server/CMakeFiles/ssl_server.dir/build.make src/server/CMakeFiles/ssl_server.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dong/ALLCODE/develop/build/CMakeFiles --progress-num=14,15 "Built target ssl_server"
+.PHONY : src/server/CMakeFiles/ssl_server.dir/all
 
 # Build rule for subdir invocation for target.
-src/client/CMakeFiles/client.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/dong/ALLCODE/develop/build/CMakeFiles 4
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/client/CMakeFiles/client.dir/all
+src/server/CMakeFiles/ssl_server.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/dong/ALLCODE/develop/build/CMakeFiles 10
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/server/CMakeFiles/ssl_server.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/dong/ALLCODE/develop/build/CMakeFiles 0
-.PHONY : src/client/CMakeFiles/client.dir/rule
+.PHONY : src/server/CMakeFiles/ssl_server.dir/rule
 
 # Convenience name for target.
-client: src/client/CMakeFiles/client.dir/rule
-.PHONY : client
+ssl_server: src/server/CMakeFiles/ssl_server.dir/rule
+.PHONY : ssl_server
 
 # clean rule for target.
-src/client/CMakeFiles/client.dir/clean:
-	$(MAKE) $(MAKESILENT) -f src/client/CMakeFiles/client.dir/build.make src/client/CMakeFiles/client.dir/clean
-.PHONY : src/client/CMakeFiles/client.dir/clean
-
-#=============================================================================
-# Target rules for target src/server/CMakeFiles/server.dir
-
-# All Build rule for target.
-src/server/CMakeFiles/server.dir/all: libs/log/CMakeFiles/log.dir/all
-	$(MAKE) $(MAKESILENT) -f src/server/CMakeFiles/server.dir/build.make src/server/CMakeFiles/server.dir/depend
-	$(MAKE) $(MAKESILENT) -f src/server/CMakeFiles/server.dir/build.make src/server/CMakeFiles/server.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dong/ALLCODE/develop/build/CMakeFiles --progress-num=11,12 "Built target server"
-.PHONY : src/server/CMakeFiles/server.dir/all
-
-# Build rule for subdir invocation for target.
-src/server/CMakeFiles/server.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/dong/ALLCODE/develop/build/CMakeFiles 4
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/server/CMakeFiles/server.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/dong/ALLCODE/develop/build/CMakeFiles 0
-.PHONY : src/server/CMakeFiles/server.dir/rule
-
-# Convenience name for target.
-server: src/server/CMakeFiles/server.dir/rule
-.PHONY : server
-
-# clean rule for target.
-src/server/CMakeFiles/server.dir/clean:
-	$(MAKE) $(MAKESILENT) -f src/server/CMakeFiles/server.dir/build.make src/server/CMakeFiles/server.dir/clean
-.PHONY : src/server/CMakeFiles/server.dir/clean
-
-#=============================================================================
-# Target rules for target src/ssl/CMakeFiles/ssl.dir
-
-# All Build rule for target.
-src/ssl/CMakeFiles/ssl.dir/all: libs/log/CMakeFiles/log.dir/all
-	$(MAKE) $(MAKESILENT) -f src/ssl/CMakeFiles/ssl.dir/build.make src/ssl/CMakeFiles/ssl.dir/depend
-	$(MAKE) $(MAKESILENT) -f src/ssl/CMakeFiles/ssl.dir/build.make src/ssl/CMakeFiles/ssl.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dong/ALLCODE/develop/build/CMakeFiles --progress-num=13,14 "Built target ssl"
-.PHONY : src/ssl/CMakeFiles/ssl.dir/all
-
-# Build rule for subdir invocation for target.
-src/ssl/CMakeFiles/ssl.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/dong/ALLCODE/develop/build/CMakeFiles 4
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/ssl/CMakeFiles/ssl.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/dong/ALLCODE/develop/build/CMakeFiles 0
-.PHONY : src/ssl/CMakeFiles/ssl.dir/rule
-
-# Convenience name for target.
-ssl: src/ssl/CMakeFiles/ssl.dir/rule
-.PHONY : ssl
-
-# clean rule for target.
-src/ssl/CMakeFiles/ssl.dir/clean:
-	$(MAKE) $(MAKESILENT) -f src/ssl/CMakeFiles/ssl.dir/build.make src/ssl/CMakeFiles/ssl.dir/clean
-.PHONY : src/ssl/CMakeFiles/ssl.dir/clean
+src/server/CMakeFiles/ssl_server.dir/clean:
+	$(MAKE) $(MAKESILENT) -f src/server/CMakeFiles/ssl_server.dir/build.make src/server/CMakeFiles/ssl_server.dir/clean
+.PHONY : src/server/CMakeFiles/ssl_server.dir/clean
 
 #=============================================================================
 # Target rules for target libs/log/CMakeFiles/log.dir
@@ -348,7 +300,7 @@ src/ssl/CMakeFiles/ssl.dir/clean:
 libs/log/CMakeFiles/log.dir/all:
 	$(MAKE) $(MAKESILENT) -f libs/log/CMakeFiles/log.dir/build.make libs/log/CMakeFiles/log.dir/depend
 	$(MAKE) $(MAKESILENT) -f libs/log/CMakeFiles/log.dir/build.make libs/log/CMakeFiles/log.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dong/ALLCODE/develop/build/CMakeFiles --progress-num=3,4 "Built target log"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dong/ALLCODE/develop/build/CMakeFiles --progress-num=1,2 "Built target log"
 .PHONY : libs/log/CMakeFiles/log.dir/all
 
 # Build rule for subdir invocation for target.
@@ -374,7 +326,7 @@ libs/log/CMakeFiles/log.dir/clean:
 libs/test/CMakeFiles/test.dir/all:
 	$(MAKE) $(MAKESILENT) -f libs/test/CMakeFiles/test.dir/build.make libs/test/CMakeFiles/test.dir/depend
 	$(MAKE) $(MAKESILENT) -f libs/test/CMakeFiles/test.dir/build.make libs/test/CMakeFiles/test.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dong/ALLCODE/develop/build/CMakeFiles --progress-num=15,16 "Built target test"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dong/ALLCODE/develop/build/CMakeFiles --progress-num=16,17 "Built target test"
 .PHONY : libs/test/CMakeFiles/test.dir/all
 
 # Build rule for subdir invocation for target.
@@ -392,6 +344,58 @@ test: libs/test/CMakeFiles/test.dir/rule
 libs/test/CMakeFiles/test.dir/clean:
 	$(MAKE) $(MAKESILENT) -f libs/test/CMakeFiles/test.dir/build.make libs/test/CMakeFiles/test.dir/clean
 .PHONY : libs/test/CMakeFiles/test.dir/clean
+
+#=============================================================================
+# Target rules for target libs/ssl/CMakeFiles/ssl.dir
+
+# All Build rule for target.
+libs/ssl/CMakeFiles/ssl.dir/all:
+	$(MAKE) $(MAKESILENT) -f libs/ssl/CMakeFiles/ssl.dir/build.make libs/ssl/CMakeFiles/ssl.dir/depend
+	$(MAKE) $(MAKESILENT) -f libs/ssl/CMakeFiles/ssl.dir/build.make libs/ssl/CMakeFiles/ssl.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dong/ALLCODE/develop/build/CMakeFiles --progress-num=9,10,11 "Built target ssl"
+.PHONY : libs/ssl/CMakeFiles/ssl.dir/all
+
+# Build rule for subdir invocation for target.
+libs/ssl/CMakeFiles/ssl.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/dong/ALLCODE/develop/build/CMakeFiles 3
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 libs/ssl/CMakeFiles/ssl.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/dong/ALLCODE/develop/build/CMakeFiles 0
+.PHONY : libs/ssl/CMakeFiles/ssl.dir/rule
+
+# Convenience name for target.
+ssl: libs/ssl/CMakeFiles/ssl.dir/rule
+.PHONY : ssl
+
+# clean rule for target.
+libs/ssl/CMakeFiles/ssl.dir/clean:
+	$(MAKE) $(MAKESILENT) -f libs/ssl/CMakeFiles/ssl.dir/build.make libs/ssl/CMakeFiles/ssl.dir/clean
+.PHONY : libs/ssl/CMakeFiles/ssl.dir/clean
+
+#=============================================================================
+# Target rules for target libs/network/CMakeFiles/network.dir
+
+# All Build rule for target.
+libs/network/CMakeFiles/network.dir/all:
+	$(MAKE) $(MAKESILENT) -f libs/network/CMakeFiles/network.dir/build.make libs/network/CMakeFiles/network.dir/depend
+	$(MAKE) $(MAKESILENT) -f libs/network/CMakeFiles/network.dir/build.make libs/network/CMakeFiles/network.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dong/ALLCODE/develop/build/CMakeFiles --progress-num=6,7,8 "Built target network"
+.PHONY : libs/network/CMakeFiles/network.dir/all
+
+# Build rule for subdir invocation for target.
+libs/network/CMakeFiles/network.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/dong/ALLCODE/develop/build/CMakeFiles 3
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 libs/network/CMakeFiles/network.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/dong/ALLCODE/develop/build/CMakeFiles 0
+.PHONY : libs/network/CMakeFiles/network.dir/rule
+
+# Convenience name for target.
+network: libs/network/CMakeFiles/network.dir/rule
+.PHONY : network
+
+# clean rule for target.
+libs/network/CMakeFiles/network.dir/clean:
+	$(MAKE) $(MAKESILENT) -f libs/network/CMakeFiles/network.dir/build.make libs/network/CMakeFiles/network.dir/clean
+.PHONY : libs/network/CMakeFiles/network.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

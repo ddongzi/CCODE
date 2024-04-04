@@ -6,6 +6,16 @@
         "protocol_type.h": "c",
         "ssl.h": "c",
         "log.h": "c",
-        "time.h": "c"
+        "time.h": "c",
+        "gnutls.h": "c",
+        "internet": "c",
+        "network_config.h": "c",
+        "unistd.h": "c",
+        "array": "c",
+        "string": "c",
+        "buffer": "c",
+        "socket": "c",
+        "string_view": "c",
+        "pthread.h": "c"
     }
 }

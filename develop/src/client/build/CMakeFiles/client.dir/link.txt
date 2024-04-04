@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/client.dir/main.c.o -o client   -L/home/dong/ALLCODE/develop/library  -Wl,-rpath,/home/dong/ALLCODE/develop/library -llog 

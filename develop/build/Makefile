@@ -130,56 +130,30 @@ main/fast:
 .PHONY : main/fast
 
 #=============================================================================
-# Target rules for targets named network
+# Target rules for targets named ssl_client
 
 # Build rule for target.
-network: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 network
-.PHONY : network
+ssl_client: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ssl_client
+.PHONY : ssl_client
 
 # fast build rule for target.
-network/fast:
-	$(MAKE) $(MAKESILENT) -f src/network/CMakeFiles/network.dir/build.make src/network/CMakeFiles/network.dir/build
-.PHONY : network/fast
+ssl_client/fast:
+	$(MAKE) $(MAKESILENT) -f src/client/CMakeFiles/ssl_client.dir/build.make src/client/CMakeFiles/ssl_client.dir/build
+.PHONY : ssl_client/fast
 
 #=============================================================================
-# Target rules for targets named client
+# Target rules for targets named ssl_server
 
 # Build rule for target.
-client: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 client
-.PHONY : client
+ssl_server: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ssl_server
+.PHONY : ssl_server
 
 # fast build rule for target.
-client/fast:
-	$(MAKE) $(MAKESILENT) -f src/client/CMakeFiles/client.dir/build.make src/client/CMakeFiles/client.dir/build
-.PHONY : client/fast
-
-#=============================================================================
-# Target rules for targets named server
-
-# Build rule for target.
-server: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 server
-.PHONY : server
-
-# fast build rule for target.
-server/fast:
-	$(MAKE) $(MAKESILENT) -f src/server/CMakeFiles/server.dir/build.make src/server/CMakeFiles/server.dir/build
-.PHONY : server/fast
-
-#=============================================================================
-# Target rules for targets named ssl
-
-# Build rule for target.
-ssl: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ssl
-.PHONY : ssl
-
-# fast build rule for target.
-ssl/fast:
-	$(MAKE) $(MAKESILENT) -f src/ssl/CMakeFiles/ssl.dir/build.make src/ssl/CMakeFiles/ssl.dir/build
-.PHONY : ssl/fast
+ssl_server/fast:
+	$(MAKE) $(MAKESILENT) -f src/server/CMakeFiles/ssl_server.dir/build.make src/server/CMakeFiles/ssl_server.dir/build
+.PHONY : ssl_server/fast
 
 #=============================================================================
 # Target rules for targets named log
@@ -206,6 +180,32 @@ test: cmake_check_build_system
 test/fast:
 	$(MAKE) $(MAKESILENT) -f libs/test/CMakeFiles/test.dir/build.make libs/test/CMakeFiles/test.dir/build
 .PHONY : test/fast
+
+#=============================================================================
+# Target rules for targets named ssl
+
+# Build rule for target.
+ssl: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ssl
+.PHONY : ssl
+
+# fast build rule for target.
+ssl/fast:
+	$(MAKE) $(MAKESILENT) -f libs/ssl/CMakeFiles/ssl.dir/build.make libs/ssl/CMakeFiles/ssl.dir/build
+.PHONY : ssl/fast
+
+#=============================================================================
+# Target rules for targets named network
+
+# Build rule for target.
+network: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 network
+.PHONY : network
+
+# fast build rule for target.
+network/fast:
+	$(MAKE) $(MAKESILENT) -f libs/network/CMakeFiles/network.dir/build.make libs/network/CMakeFiles/network.dir/build
+.PHONY : network/fast
 
 main.o: main.c.o
 .PHONY : main.o
@@ -263,12 +263,12 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... client"
 	@echo "... log"
 	@echo "... main"
 	@echo "... network"
-	@echo "... server"
 	@echo "... ssl"
+	@echo "... ssl_client"
+	@echo "... ssl_server"
 	@echo "... test"
 	@echo "... main.o"
 	@echo "... main.i"

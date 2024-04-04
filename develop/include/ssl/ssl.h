@@ -14,17 +14,21 @@
 #define MAX_METHOD_LENGTH 10
 #define MAX_HEADER_LENGTH 100
 #define MAX_BODY_LENGTH 1024
+
+#define HEADER_LENGTH_BYTE 7
+#define SSL_VERSION 0
+#define SSL_TYPE 0
+
 #pragma pack(1)
 typedef struct {
     unsigned int len : 8; // body的长度
     unsigned int version : 4; // 版本号，占4位
     unsigned int type : 4; // 记录类型，占3位
-    unsigned int time : 8; // 时间，占8位
+    unsigned int time : 32; // 时间，占32位
 } ssl_header_t;
 
 typedef struct {
-    ssl_header_t header;
-    uint8_t body[0];
+    uint8_t data[0];
     size_t size;
 } ssl_body_t;
 
