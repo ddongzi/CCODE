@@ -1,1 +1,1 @@
-/usr/bin/cc CMakeFiles/ssl_client.dir/ssl_client.c.o -o ../../../bin/ssl_client   -L/home/dong/ALLCODE/develop/library  -Wl,-rpath,/home/dong/ALLCODE/develop/library ../../../library/liblog.so ../../../library/libnetwork.so ../../../library/libssl.so -lgnutls 
+/usr/bin/gcc -g CMakeFiles/ssl_client.dir/ssl_client.c.o -o ../../../bin/ssl_client   -L/home/dong/ALLCODE/develop/library  -Wl,-rpath,/home/dong/ALLCODE/develop/library ../../../library/liblog.so ../../../library/libnetwork.so ../../../library/libssl.so -lgnutls 

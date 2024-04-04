@@ -73,15 +73,15 @@ src/client/CMakeFiles/ssl_client.dir/ssl_client.c.o: src/client/CMakeFiles/ssl_c
 src/client/CMakeFiles/ssl_client.dir/ssl_client.c.o: ../src/client/ssl_client.c
 src/client/CMakeFiles/ssl_client.dir/ssl_client.c.o: src/client/CMakeFiles/ssl_client.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dong/ALLCODE/develop/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object src/client/CMakeFiles/ssl_client.dir/ssl_client.c.o"
-	cd /home/dong/ALLCODE/develop/build/src/client && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT src/client/CMakeFiles/ssl_client.dir/ssl_client.c.o -MF CMakeFiles/ssl_client.dir/ssl_client.c.o.d -o CMakeFiles/ssl_client.dir/ssl_client.c.o -c /home/dong/ALLCODE/develop/src/client/ssl_client.c
+	cd /home/dong/ALLCODE/develop/build/src/client && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT src/client/CMakeFiles/ssl_client.dir/ssl_client.c.o -MF CMakeFiles/ssl_client.dir/ssl_client.c.o.d -o CMakeFiles/ssl_client.dir/ssl_client.c.o -c /home/dong/ALLCODE/develop/src/client/ssl_client.c
 
 src/client/CMakeFiles/ssl_client.dir/ssl_client.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/ssl_client.dir/ssl_client.c.i"
-	cd /home/dong/ALLCODE/develop/build/src/client && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/dong/ALLCODE/develop/src/client/ssl_client.c > CMakeFiles/ssl_client.dir/ssl_client.c.i
+	cd /home/dong/ALLCODE/develop/build/src/client && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/dong/ALLCODE/develop/src/client/ssl_client.c > CMakeFiles/ssl_client.dir/ssl_client.c.i
 
 src/client/CMakeFiles/ssl_client.dir/ssl_client.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/ssl_client.dir/ssl_client.c.s"
-	cd /home/dong/ALLCODE/develop/build/src/client && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/dong/ALLCODE/develop/src/client/ssl_client.c -o CMakeFiles/ssl_client.dir/ssl_client.c.s
+	cd /home/dong/ALLCODE/develop/build/src/client && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/dong/ALLCODE/develop/src/client/ssl_client.c -o CMakeFiles/ssl_client.dir/ssl_client.c.s
 
 # Object files for target ssl_client
 ssl_client_OBJECTS = \

@@ -73,15 +73,15 @@ libs/test/CMakeFiles/test.dir/src/test.c.o: libs/test/CMakeFiles/test.dir/flags.
 libs/test/CMakeFiles/test.dir/src/test.c.o: ../libs/test/src/test.c
 libs/test/CMakeFiles/test.dir/src/test.c.o: libs/test/CMakeFiles/test.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dong/ALLCODE/develop/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object libs/test/CMakeFiles/test.dir/src/test.c.o"
-	cd /home/dong/ALLCODE/develop/build/libs/test && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT libs/test/CMakeFiles/test.dir/src/test.c.o -MF CMakeFiles/test.dir/src/test.c.o.d -o CMakeFiles/test.dir/src/test.c.o -c /home/dong/ALLCODE/develop/libs/test/src/test.c
+	cd /home/dong/ALLCODE/develop/build/libs/test && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT libs/test/CMakeFiles/test.dir/src/test.c.o -MF CMakeFiles/test.dir/src/test.c.o.d -o CMakeFiles/test.dir/src/test.c.o -c /home/dong/ALLCODE/develop/libs/test/src/test.c
 
 libs/test/CMakeFiles/test.dir/src/test.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/test.dir/src/test.c.i"
-	cd /home/dong/ALLCODE/develop/build/libs/test && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/dong/ALLCODE/develop/libs/test/src/test.c > CMakeFiles/test.dir/src/test.c.i
+	cd /home/dong/ALLCODE/develop/build/libs/test && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/dong/ALLCODE/develop/libs/test/src/test.c > CMakeFiles/test.dir/src/test.c.i
 
 libs/test/CMakeFiles/test.dir/src/test.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/test.dir/src/test.c.s"
-	cd /home/dong/ALLCODE/develop/build/libs/test && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/dong/ALLCODE/develop/libs/test/src/test.c -o CMakeFiles/test.dir/src/test.c.s
+	cd /home/dong/ALLCODE/develop/build/libs/test && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/dong/ALLCODE/develop/libs/test/src/test.c -o CMakeFiles/test.dir/src/test.c.s
 
 # Object files for target test
 test_OBJECTS = \

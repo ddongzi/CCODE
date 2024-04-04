@@ -73,15 +73,15 @@ src/server/CMakeFiles/ssl_server.dir/ssl_server.c.o: src/server/CMakeFiles/ssl_s
 src/server/CMakeFiles/ssl_server.dir/ssl_server.c.o: ../src/server/ssl_server.c
 src/server/CMakeFiles/ssl_server.dir/ssl_server.c.o: src/server/CMakeFiles/ssl_server.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dong/ALLCODE/develop/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object src/server/CMakeFiles/ssl_server.dir/ssl_server.c.o"
-	cd /home/dong/ALLCODE/develop/build/src/server && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT src/server/CMakeFiles/ssl_server.dir/ssl_server.c.o -MF CMakeFiles/ssl_server.dir/ssl_server.c.o.d -o CMakeFiles/ssl_server.dir/ssl_server.c.o -c /home/dong/ALLCODE/develop/src/server/ssl_server.c
+	cd /home/dong/ALLCODE/develop/build/src/server && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT src/server/CMakeFiles/ssl_server.dir/ssl_server.c.o -MF CMakeFiles/ssl_server.dir/ssl_server.c.o.d -o CMakeFiles/ssl_server.dir/ssl_server.c.o -c /home/dong/ALLCODE/develop/src/server/ssl_server.c
 
 src/server/CMakeFiles/ssl_server.dir/ssl_server.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/ssl_server.dir/ssl_server.c.i"
-	cd /home/dong/ALLCODE/develop/build/src/server && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/dong/ALLCODE/develop/src/server/ssl_server.c > CMakeFiles/ssl_server.dir/ssl_server.c.i
+	cd /home/dong/ALLCODE/develop/build/src/server && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/dong/ALLCODE/develop/src/server/ssl_server.c > CMakeFiles/ssl_server.dir/ssl_server.c.i
 
 src/server/CMakeFiles/ssl_server.dir/ssl_server.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/ssl_server.dir/ssl_server.c.s"
-	cd /home/dong/ALLCODE/develop/build/src/server && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/dong/ALLCODE/develop/src/server/ssl_server.c -o CMakeFiles/ssl_server.dir/ssl_server.c.s
+	cd /home/dong/ALLCODE/develop/build/src/server && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/dong/ALLCODE/develop/src/server/ssl_server.c -o CMakeFiles/ssl_server.dir/ssl_server.c.s
 
 # Object files for target ssl_server
 ssl_server_OBJECTS = \

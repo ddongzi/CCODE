@@ -32,9 +32,8 @@ socket_fd_t create_server_socket(uint16_t port)
 
     socket_fd_t listen_fd = socket(AF_INET, SOCK_STREAM, 0);
     if (listen_fd == 0) {
-        LOG_ERROR("socket failed");
         perror("socket failed");
-        exit(EXIT_FAILURE);
+        return listen_fd;
     }
     // 设置服务器地址和端口
     address.sin_family = AF_INET;
@@ -43,17 +42,14 @@ socket_fd_t create_server_socket(uint16_t port)
 
     // 绑定套接字到指定端口
     if (bind(listen_fd, (struct sockaddr *)&address, sizeof(address))<0) {
-        LOG_ERROR("bind failed. port (%d).", port);
         perror("bind failed");
-        exit(EXIT_FAILURE);
+        return listen_fd;
     }
     // 监听端口，最大连接数设置为 5
     if (listen(listen_fd, 5) < 0) {
         perror("listen failed");
-        exit(EXIT_FAILURE);
+        return listen_fd;
     }
-    LOG_INFO("Server listening on port (%d)", port);
-
     return listen_fd;
 }
 
@@ -63,13 +59,9 @@ socket_fd_t accept_client(socket_fd_t listen_fd)
     socklen_t addr_len;
     socket_fd_t new_socket;
     memset(&address, 0, sizeof(address));
-    if ((new_socket = accept(listen_fd, (struct sockaddr *)&address, (socklen_t*)&addr_len))<0) {
-        close_socket(new_socket);
-        // TODO accept failed: Bad file descriptor
-        LOG_ERROR("accept failed. listen_fd : %d , socket : %d, %u", listen_fd, new_socket, addr_len);
-        perror("accept failed");
-        exit(EXIT_FAILURE);
-    }
+    addr_len = 0;
+    new_socket = accept(listen_fd, (struct sockaddr *)&address, (socklen_t*)&addr_len);
+
     return new_socket;
 }
 void close_socket(socket_fd_t socket)

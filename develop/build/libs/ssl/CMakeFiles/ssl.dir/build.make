@@ -73,29 +73,29 @@ libs/ssl/CMakeFiles/ssl.dir/src/main.c.o: libs/ssl/CMakeFiles/ssl.dir/flags.make
 libs/ssl/CMakeFiles/ssl.dir/src/main.c.o: ../libs/ssl/src/main.c
 libs/ssl/CMakeFiles/ssl.dir/src/main.c.o: libs/ssl/CMakeFiles/ssl.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dong/ALLCODE/develop/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object libs/ssl/CMakeFiles/ssl.dir/src/main.c.o"
-	cd /home/dong/ALLCODE/develop/build/libs/ssl && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT libs/ssl/CMakeFiles/ssl.dir/src/main.c.o -MF CMakeFiles/ssl.dir/src/main.c.o.d -o CMakeFiles/ssl.dir/src/main.c.o -c /home/dong/ALLCODE/develop/libs/ssl/src/main.c
+	cd /home/dong/ALLCODE/develop/build/libs/ssl && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT libs/ssl/CMakeFiles/ssl.dir/src/main.c.o -MF CMakeFiles/ssl.dir/src/main.c.o.d -o CMakeFiles/ssl.dir/src/main.c.o -c /home/dong/ALLCODE/develop/libs/ssl/src/main.c
 
 libs/ssl/CMakeFiles/ssl.dir/src/main.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/ssl.dir/src/main.c.i"
-	cd /home/dong/ALLCODE/develop/build/libs/ssl && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/dong/ALLCODE/develop/libs/ssl/src/main.c > CMakeFiles/ssl.dir/src/main.c.i
+	cd /home/dong/ALLCODE/develop/build/libs/ssl && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/dong/ALLCODE/develop/libs/ssl/src/main.c > CMakeFiles/ssl.dir/src/main.c.i
 
 libs/ssl/CMakeFiles/ssl.dir/src/main.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/ssl.dir/src/main.c.s"
-	cd /home/dong/ALLCODE/develop/build/libs/ssl && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/dong/ALLCODE/develop/libs/ssl/src/main.c -o CMakeFiles/ssl.dir/src/main.c.s
+	cd /home/dong/ALLCODE/develop/build/libs/ssl && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/dong/ALLCODE/develop/libs/ssl/src/main.c -o CMakeFiles/ssl.dir/src/main.c.s
 
 libs/ssl/CMakeFiles/ssl.dir/src/ssl.c.o: libs/ssl/CMakeFiles/ssl.dir/flags.make
 libs/ssl/CMakeFiles/ssl.dir/src/ssl.c.o: ../libs/ssl/src/ssl.c
 libs/ssl/CMakeFiles/ssl.dir/src/ssl.c.o: libs/ssl/CMakeFiles/ssl.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dong/ALLCODE/develop/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object libs/ssl/CMakeFiles/ssl.dir/src/ssl.c.o"
-	cd /home/dong/ALLCODE/develop/build/libs/ssl && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT libs/ssl/CMakeFiles/ssl.dir/src/ssl.c.o -MF CMakeFiles/ssl.dir/src/ssl.c.o.d -o CMakeFiles/ssl.dir/src/ssl.c.o -c /home/dong/ALLCODE/develop/libs/ssl/src/ssl.c
+	cd /home/dong/ALLCODE/develop/build/libs/ssl && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT libs/ssl/CMakeFiles/ssl.dir/src/ssl.c.o -MF CMakeFiles/ssl.dir/src/ssl.c.o.d -o CMakeFiles/ssl.dir/src/ssl.c.o -c /home/dong/ALLCODE/develop/libs/ssl/src/ssl.c
 
 libs/ssl/CMakeFiles/ssl.dir/src/ssl.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/ssl.dir/src/ssl.c.i"
-	cd /home/dong/ALLCODE/develop/build/libs/ssl && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/dong/ALLCODE/develop/libs/ssl/src/ssl.c > CMakeFiles/ssl.dir/src/ssl.c.i
+	cd /home/dong/ALLCODE/develop/build/libs/ssl && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/dong/ALLCODE/develop/libs/ssl/src/ssl.c > CMakeFiles/ssl.dir/src/ssl.c.i
 
 libs/ssl/CMakeFiles/ssl.dir/src/ssl.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/ssl.dir/src/ssl.c.s"
-	cd /home/dong/ALLCODE/develop/build/libs/ssl && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/dong/ALLCODE/develop/libs/ssl/src/ssl.c -o CMakeFiles/ssl.dir/src/ssl.c.s
+	cd /home/dong/ALLCODE/develop/build/libs/ssl && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/dong/ALLCODE/develop/libs/ssl/src/ssl.c -o CMakeFiles/ssl.dir/src/ssl.c.s
 
 # Object files for target ssl
 ssl_OBJECTS = \

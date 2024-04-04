@@ -111,8 +111,24 @@ src/server/CMakeFiles/ssl_server.dir/ssl_server.c.o: ../src/server/ssl_server.c 
   /usr/include/x86_64-linux-gnu/bits/setjmp.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct___jmp_buf_tag.h \
   /usr/include/x86_64-linux-gnu/bits/pthread_stack_min-dynamic.h \
-  /usr/include/x86_64-linux-gnu/bits/pthread_stack_min.h
+  /usr/include/x86_64-linux-gnu/bits/pthread_stack_min.h \
+  /usr/include/errno.h \
+  /usr/include/x86_64-linux-gnu/bits/errno.h \
+  /usr/include/linux/errno.h \
+  /usr/include/x86_64-linux-gnu/asm/errno.h \
+  /usr/include/asm-generic/errno.h \
+  /usr/include/asm-generic/errno-base.h
 
+
+/usr/include/asm-generic/errno-base.h:
+
+/usr/include/asm-generic/errno.h:
+
+/usr/include/linux/errno.h:
+
+/usr/include/x86_64-linux-gnu/bits/errno.h:
+
+/usr/include/errno.h:
 
 /usr/include/x86_64-linux-gnu/bits/setjmp.h:
 
@@ -149,6 +165,8 @@ src/server/CMakeFiles/ssl_server.dir/ssl_server.c.o: ../src/server/ssl_server.c 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/stdbool.h:
 
 ../include/log/log.h:
+
+/usr/include/x86_64-linux-gnu/asm/errno.h:
 
 ../include/ssl/ssl.h:
 

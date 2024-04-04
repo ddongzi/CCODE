@@ -4,6 +4,9 @@ project(MY
         DESCRIPTION ""
         LANGUAGES "C"
 )
+# 触发断点调试
+set (CMAKE_BUILD_TYPE Debug)
+
 # 指定使用C11编译
 set(CMAKE_C_STANDARD 11)
 # 设置exe输出目录

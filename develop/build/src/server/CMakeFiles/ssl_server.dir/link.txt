@@ -1,1 +1,1 @@
-/usr/bin/cc CMakeFiles/ssl_server.dir/ssl_server.c.o -o ../../../bin/ssl_server   -L/home/dong/ALLCODE/develop/library  -Wl,-rpath,/home/dong/ALLCODE/develop/library ../../../library/liblog.so ../../../library/libssl.so ../../../library/libnetwork.so -lgnutls 
+/usr/bin/gcc -g CMakeFiles/ssl_server.dir/ssl_server.c.o -o ../../../bin/ssl_server   -L/home/dong/ALLCODE/develop/library  -Wl,-rpath,/home/dong/ALLCODE/develop/library ../../../library/liblog.so ../../../library/libssl.so ../../../library/libnetwork.so -lgnutls 

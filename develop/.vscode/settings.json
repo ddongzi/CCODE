@@ -16,6 +16,8 @@
         "buffer": "c",
         "socket": "c",
         "string_view": "c",
-        "pthread.h": "c"
+        "pthread.h": "c",
+        "initializer_list": "c",
+        "utility": "c"
     }
 }

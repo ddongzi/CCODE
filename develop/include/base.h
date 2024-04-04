@@ -7,6 +7,8 @@
 
 #define MEMBER_OF(type, member) type->member
 
+// 2024-4-4 0:0:0 
+#define BASE_TIME_STAMP 1712160000
 
 typedef enum {
     SUCCESS,

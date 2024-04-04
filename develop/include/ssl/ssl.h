@@ -15,21 +15,21 @@
 #define MAX_HEADER_LENGTH 100
 #define MAX_BODY_LENGTH 1024
 
-#define HEADER_LENGTH_BYTE 7
-#define SSL_VERSION 0
-#define SSL_TYPE 0
+#define HEADER_LENGTH_BYTE 6
+#define SSL_VERSION 2
+#define SSL_TYPE 3
 
 #pragma pack(1)
 typedef struct {
     unsigned int len : 8; // body的长度
     unsigned int version : 4; // 版本号，占4位
-    unsigned int type : 4; // 记录类型，占3位
-    unsigned int time : 32; // 时间，占32位
+    unsigned int type : 4; // 记录类型，占4位
+    unsigned int time : 32; // 时间，占32位， 4个字节可以表示131年
 } ssl_header_t;
 
 typedef struct {
-    uint8_t data[0];
     size_t size;
+    uint8_t data[];
 } ssl_body_t;
 
 // 定义宏，用于将 ssl_header_t 结构体转换为字符串

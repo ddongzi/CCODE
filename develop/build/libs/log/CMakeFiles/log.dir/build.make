@@ -73,15 +73,15 @@ libs/log/CMakeFiles/log.dir/src/log.c.o: libs/log/CMakeFiles/log.dir/flags.make
 libs/log/CMakeFiles/log.dir/src/log.c.o: ../libs/log/src/log.c
 libs/log/CMakeFiles/log.dir/src/log.c.o: libs/log/CMakeFiles/log.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dong/ALLCODE/develop/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object libs/log/CMakeFiles/log.dir/src/log.c.o"
-	cd /home/dong/ALLCODE/develop/build/libs/log && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT libs/log/CMakeFiles/log.dir/src/log.c.o -MF CMakeFiles/log.dir/src/log.c.o.d -o CMakeFiles/log.dir/src/log.c.o -c /home/dong/ALLCODE/develop/libs/log/src/log.c
+	cd /home/dong/ALLCODE/develop/build/libs/log && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT libs/log/CMakeFiles/log.dir/src/log.c.o -MF CMakeFiles/log.dir/src/log.c.o.d -o CMakeFiles/log.dir/src/log.c.o -c /home/dong/ALLCODE/develop/libs/log/src/log.c
 
 libs/log/CMakeFiles/log.dir/src/log.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/log.dir/src/log.c.i"
-	cd /home/dong/ALLCODE/develop/build/libs/log && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/dong/ALLCODE/develop/libs/log/src/log.c > CMakeFiles/log.dir/src/log.c.i
+	cd /home/dong/ALLCODE/develop/build/libs/log && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/dong/ALLCODE/develop/libs/log/src/log.c > CMakeFiles/log.dir/src/log.c.i
 
 libs/log/CMakeFiles/log.dir/src/log.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/log.dir/src/log.c.s"
-	cd /home/dong/ALLCODE/develop/build/libs/log && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/dong/ALLCODE/develop/libs/log/src/log.c -o CMakeFiles/log.dir/src/log.c.s
+	cd /home/dong/ALLCODE/develop/build/libs/log && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/dong/ALLCODE/develop/libs/log/src/log.c -o CMakeFiles/log.dir/src/log.c.s
 
 # Object files for target log
 log_OBJECTS = \

@@ -73,29 +73,29 @@ libs/network/CMakeFiles/network.dir/src/base_socket.c.o: libs/network/CMakeFiles
 libs/network/CMakeFiles/network.dir/src/base_socket.c.o: ../libs/network/src/base_socket.c
 libs/network/CMakeFiles/network.dir/src/base_socket.c.o: libs/network/CMakeFiles/network.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dong/ALLCODE/develop/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object libs/network/CMakeFiles/network.dir/src/base_socket.c.o"
-	cd /home/dong/ALLCODE/develop/build/libs/network && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT libs/network/CMakeFiles/network.dir/src/base_socket.c.o -MF CMakeFiles/network.dir/src/base_socket.c.o.d -o CMakeFiles/network.dir/src/base_socket.c.o -c /home/dong/ALLCODE/develop/libs/network/src/base_socket.c
+	cd /home/dong/ALLCODE/develop/build/libs/network && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT libs/network/CMakeFiles/network.dir/src/base_socket.c.o -MF CMakeFiles/network.dir/src/base_socket.c.o.d -o CMakeFiles/network.dir/src/base_socket.c.o -c /home/dong/ALLCODE/develop/libs/network/src/base_socket.c
 
 libs/network/CMakeFiles/network.dir/src/base_socket.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/network.dir/src/base_socket.c.i"
-	cd /home/dong/ALLCODE/develop/build/libs/network && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/dong/ALLCODE/develop/libs/network/src/base_socket.c > CMakeFiles/network.dir/src/base_socket.c.i
+	cd /home/dong/ALLCODE/develop/build/libs/network && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/dong/ALLCODE/develop/libs/network/src/base_socket.c > CMakeFiles/network.dir/src/base_socket.c.i
 
 libs/network/CMakeFiles/network.dir/src/base_socket.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/network.dir/src/base_socket.c.s"
-	cd /home/dong/ALLCODE/develop/build/libs/network && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/dong/ALLCODE/develop/libs/network/src/base_socket.c -o CMakeFiles/network.dir/src/base_socket.c.s
+	cd /home/dong/ALLCODE/develop/build/libs/network && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/dong/ALLCODE/develop/libs/network/src/base_socket.c -o CMakeFiles/network.dir/src/base_socket.c.s
 
 libs/network/CMakeFiles/network.dir/src/network.c.o: libs/network/CMakeFiles/network.dir/flags.make
 libs/network/CMakeFiles/network.dir/src/network.c.o: ../libs/network/src/network.c
 libs/network/CMakeFiles/network.dir/src/network.c.o: libs/network/CMakeFiles/network.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dong/ALLCODE/develop/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object libs/network/CMakeFiles/network.dir/src/network.c.o"
-	cd /home/dong/ALLCODE/develop/build/libs/network && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT libs/network/CMakeFiles/network.dir/src/network.c.o -MF CMakeFiles/network.dir/src/network.c.o.d -o CMakeFiles/network.dir/src/network.c.o -c /home/dong/ALLCODE/develop/libs/network/src/network.c
+	cd /home/dong/ALLCODE/develop/build/libs/network && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT libs/network/CMakeFiles/network.dir/src/network.c.o -MF CMakeFiles/network.dir/src/network.c.o.d -o CMakeFiles/network.dir/src/network.c.o -c /home/dong/ALLCODE/develop/libs/network/src/network.c
 
 libs/network/CMakeFiles/network.dir/src/network.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/network.dir/src/network.c.i"
-	cd /home/dong/ALLCODE/develop/build/libs/network && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/dong/ALLCODE/develop/libs/network/src/network.c > CMakeFiles/network.dir/src/network.c.i
+	cd /home/dong/ALLCODE/develop/build/libs/network && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/dong/ALLCODE/develop/libs/network/src/network.c > CMakeFiles/network.dir/src/network.c.i
 
 libs/network/CMakeFiles/network.dir/src/network.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/network.dir/src/network.c.s"
-	cd /home/dong/ALLCODE/develop/build/libs/network && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/dong/ALLCODE/develop/libs/network/src/network.c -o CMakeFiles/network.dir/src/network.c.s
+	cd /home/dong/ALLCODE/develop/build/libs/network && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/dong/ALLCODE/develop/libs/network/src/network.c -o CMakeFiles/network.dir/src/network.c.s
 
 # Object files for target network
 network_OBJECTS = \
