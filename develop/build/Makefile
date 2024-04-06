@@ -65,6 +65,16 @@ CMAKE_BINARY_DIR = /home/dong/ALLCODE/develop/build
 #=============================================================================
 # Targets provided globally by CMake.
 
+# Special rule for the target test
+test:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
+	/usr/bin/ctest --force-new-ctest-process $(ARGS)
+.PHONY : test
+
+# Special rule for the target test
+test/fast: test
+.PHONY : test/fast
+
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
@@ -169,17 +179,17 @@ log/fast:
 .PHONY : log/fast
 
 #=============================================================================
-# Target rules for targets named test
+# Target rules for targets named my_test
 
 # Build rule for target.
-test: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test
-.PHONY : test
+my_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 my_test
+.PHONY : my_test
 
 # fast build rule for target.
-test/fast:
-	$(MAKE) $(MAKESILENT) -f libs/test/CMakeFiles/test.dir/build.make libs/test/CMakeFiles/test.dir/build
-.PHONY : test/fast
+my_test/fast:
+	$(MAKE) $(MAKESILENT) -f libs/my_test/CMakeFiles/my_test.dir/build.make libs/my_test/CMakeFiles/my_test.dir/build
+.PHONY : my_test/fast
 
 #=============================================================================
 # Target rules for targets named ssl
@@ -206,6 +216,19 @@ network: cmake_check_build_system
 network/fast:
 	$(MAKE) $(MAKESILENT) -f libs/network/CMakeFiles/network.dir/build.make libs/network/CMakeFiles/network.dir/build
 .PHONY : network/fast
+
+#=============================================================================
+# Target rules for targets named test_print_cipher_suite_list
+
+# Build rule for target.
+test_print_cipher_suite_list: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_print_cipher_suite_list
+.PHONY : test_print_cipher_suite_list
+
+# fast build rule for target.
+test_print_cipher_suite_list/fast:
+	$(MAKE) $(MAKESILENT) -f tests/ssl/CMakeFiles/test_print_cipher_suite_list.dir/build.make tests/ssl/CMakeFiles/test_print_cipher_suite_list.dir/build
+.PHONY : test_print_cipher_suite_list/fast
 
 main.o: main.c.o
 .PHONY : main.o
@@ -263,13 +286,15 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... test"
 	@echo "... log"
 	@echo "... main"
+	@echo "... my_test"
 	@echo "... network"
 	@echo "... ssl"
 	@echo "... ssl_client"
 	@echo "... ssl_server"
-	@echo "... test"
+	@echo "... test_print_cipher_suite_list"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

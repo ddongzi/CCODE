@@ -10,6 +10,7 @@
 #include "ssl.h"
 #include <pthread.h>
 #include <errno.h>
+#include "gnutls/gnutls.h"
 void print_ssl(ssl_header_t *header, ssl_body_t * body)
 {
     LOG_INFO("SSL Header: Length=%u, Version=%u, Type=%u, Time=%ld, ", HEADER_LENGTH_BYTE, header->version, header->type, (long)header->time);
@@ -20,10 +21,9 @@ void cleanup(void *arg)
     socket_fd_t client_socket = (socket_fd_t)(intptr_t)arg;
     close_socket(client_socket);
 }
-void handle_request(void *arg)
+void my_ssl_communicate(void *arg)
 {
-    pthread_cleanup_push(cleanup, arg);
-
+    // =============自建ssl数据================
     socket_fd_t client_socket = (socket_fd_t)(intptr_t)arg;
 
     uint8_t *buffer = (uint8_t *) malloc(MAX_BUFFER_SIZE);
@@ -64,8 +64,56 @@ void handle_request(void *arg)
     // 与当前client 断链
     close_socket(client_socket);
     free(header_ptr);
-    pthread_cleanup_pop(1);
+}
 
+void handle_ssl(void *arg)
+{
+    socket_fd_t client_socket = (socket_fd_t)(intptr_t)arg;
+
+    gnutls_global_init();
+    gnutls_session_t session;
+
+    // 设置证书
+    gnutls_certificate_credentials_t x509_cred;
+    gnutls_certificate_allocate_credentials(&x509_cred);
+    gnutls_certificate_set_x509_trust_file(x509_cred, CA_FILE , GNUTLS_X509_FMT_PEM);
+    gnutls_certificate_set_x509_key_file(x509_cred, CERT_FILE, KEY_FILE,
+                                         GNUTLS_X509_FMT_PEM);
+
+    // 设置密码套件
+
+    int ret;
+    gnutls_init(&session, GNUTLS_SERVER);
+
+    const char *suites = "NONE:+VERS-TLS1.0:+RSA:+AES-128-CBC:+SHA1:+MD5";
+    gnutls_priority_set_direct(session, suites, NULL);
+
+    gnutls_protocol_t protocol = gnutls_protocol_get_version(session);
+    LOG_INFO("SERVER ssl version : %s", gnutls_protocol_get_name(protocol));
+
+    gnutls_transport_set_int(session, client_socket);
+
+
+    ret = gnutls_handshake(session);
+    if (ret < 0) {
+        fprintf(stderr, "SERVER Handshake failed : %s \n", gnutls_strerror(ret));
+        close_socket(client_socket);
+        gnutls_deinit(session);
+        gnutls_global_deinit();
+        return;
+    }
+    // 关闭连接
+    gnutls_bye(session, GNUTLS_SHUT_RDWR);
+    close_socket(client_socket);
+    gnutls_deinit(session);
+    gnutls_global_deinit();
+}
+
+void handle_request(void *arg)
+{
+    pthread_cleanup_push(cleanup, arg);
+    handle_ssl(arg);
+    pthread_cleanup_pop(1);
 }
 
 int main(void )

@@ -54,4 +54,14 @@ libs/ssl/CMakeFiles/ssl.dir/src/ssl.c.o: \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdint.h /usr/include/stdint.h \
  /usr/include/x86_64-linux-gnu/bits/wchar.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
- /home/dong/ALLCODE/develop/include/base.h
+ /home/dong/ALLCODE/develop/include/base.h \
+ /usr/local/include/gnutls/gnutls.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
+ /usr/include/x86_64-linux-gnu/sys/uio.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
+ /usr/include/x86_64-linux-gnu/bits/uio_lim.h \
+ /usr/local/include/gnutls/compat.h \
+ /home/dong/ALLCODE/develop/include/log/log.h \
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/stdbool.h

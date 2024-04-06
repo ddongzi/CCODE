@@ -22,5 +22,14 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 file(GLOB SRC_LIST ${CMAKE_CURRENT_SOURCE_DIR}/*.c)
 add_executable(main ${SRC_LIST})
 
+# 添加子目录
 add_subdirectory(src)
 add_subdirectory(libs)
+
+# 设置ctest开关
+option(BUILD_TEST "Whether or not to build the tests" ON)
+if (${BUILD_TEST})
+    message(STATUS "Building tests")
+    enable_testing()  # Enable testing only works in root scope
+    add_subdirectory(tests)
+endif ()

@@ -19,4 +19,11 @@ add_executable(ssl_client ssl_client.c)
 add_definitions(-DCLIENT_DEBUG)
 
 
+# =================链接GNUTLS库================
+# 设置 GnuTLS 路径
+find_package(GnuTLS REQUIRED)
+# 包含 GnuTLS 头文件
+target_include_directories(ssl_client PRIVATE ${GNUTLS_INCLUDE_DIRS})
+# 链接 GnuTLS 库到可执行文件
+target_link_libraries(ssl_client gnutls)
 

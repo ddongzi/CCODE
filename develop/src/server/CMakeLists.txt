@@ -17,5 +17,13 @@ add_executable(ssl_server ssl_server.c)
 
 add_definitions(-DSERVER_DEBUG)
 
+# =================链接GNUTLS库================
+# 设置 GnuTLS 路径
+find_package(GnuTLS REQUIRED)
+# 包含 GnuTLS 头文件
+target_include_directories(ssl_server PRIVATE ${GNUTLS_INCLUDE_DIRS})
+# 链接 GnuTLS 库到可执行文件
+target_link_libraries(ssl_server gnutls)
+
 
 

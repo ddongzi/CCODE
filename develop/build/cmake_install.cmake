@@ -46,6 +46,7 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/dong/ALLCODE/develop/build/src/cmake_install.cmake")
   include("/home/dong/ALLCODE/develop/build/libs/cmake_install.cmake")
+  include("/home/dong/ALLCODE/develop/build/tests/cmake_install.cmake")
 
 endif()
 

@@ -129,8 +129,35 @@ libs/ssl/CMakeFiles/ssl.dir/src/ssl.c.o: ../libs/ssl/src/ssl.c \
   /usr/include/stdint.h \
   /usr/include/x86_64-linux-gnu/bits/wchar.h \
   /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
-  ../include/base.h
+  ../include/base.h \
+  /usr/local/include/gnutls/gnutls.h \
+  /usr/include/time.h \
+  /usr/include/x86_64-linux-gnu/bits/time.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
+  /usr/include/x86_64-linux-gnu/sys/uio.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
+  /usr/include/x86_64-linux-gnu/bits/uio_lim.h \
+  /usr/local/include/gnutls/compat.h \
+  ../include/log/log.h \
+  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdbool.h
 
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/stdbool.h:
+
+../include/log/log.h:
+
+/usr/local/include/gnutls/compat.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h:
+
+/usr/include/x86_64-linux-gnu/sys/uio.h:
+
+/usr/include/x86_64-linux-gnu/bits/time.h:
+
+/usr/include/time.h:
+
+/usr/local/include/gnutls/gnutls.h:
 
 ../libs/ssl/src/ssl.c:
 
@@ -145,6 +172,8 @@ libs/ssl/CMakeFiles/ssl.dir/src/ssl.c.o: ../libs/ssl/src/ssl.c \
 /usr/include/x86_64-linux-gnu/bits/floatn.h:
 
 /usr/include/x86_64-linux-gnu/gnu/stubs.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/FILE.h:
 
@@ -167,6 +196,8 @@ libs/ssl/CMakeFiles/ssl.dir/src/ssl.c.o: ../libs/ssl/src/ssl.c \
 /usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h:
 
 /usr/include/x86_64-linux-gnu/bits/endianness.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h:
 
@@ -207,6 +238,8 @@ libs/ssl/CMakeFiles/ssl.dir/src/ssl.c.o: ../libs/ssl/src/ssl.c \
 /usr/include/x86_64-linux-gnu/bits/waitstatus.h:
 
 /usr/include/x86_64-linux-gnu/sys/types.h:
+
+/usr/include/x86_64-linux-gnu/bits/uio_lim.h:
 
 /usr/include/endian.h:
 

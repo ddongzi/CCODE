@@ -14,6 +14,9 @@
 # EXTERNAL cache entries
 ########################
 
+//Whether or not to build the tests
+BUILD_TEST:BOOL=ON
+
 //Path to a program.
 CMAKE_ADDR2LINE:FILEPATH=/usr/bin/addr2line
 
@@ -22,13 +25,13 @@ CMAKE_AR:FILEPATH=/usr/bin/ar
 
 //Choose the type of build, options are: None Debug Release RelWithDebInfo
 // MinSizeRel ...
-CMAKE_BUILD_TYPE:STRING=
+CMAKE_BUILD_TYPE:STRING=Debug
 
 //Enable/Disable color output during build.
 CMAKE_COLOR_MAKEFILE:BOOL=ON
 
-//CXX compiler
-CMAKE_CXX_COMPILER:STRING=/usr/bin/g++
+//No help, variable specified on the command line.
+CMAKE_CXX_COMPILER:UNINITIALIZED=g++
 
 //A wrapper around 'ar' adding the appropriate '--plugin' option
 // for the GCC compiler
@@ -53,8 +56,8 @@ CMAKE_CXX_FLAGS_RELEASE:STRING=-O3 -DNDEBUG
 //Flags used by the CXX compiler during RELWITHDEBINFO builds.
 CMAKE_CXX_FLAGS_RELWITHDEBINFO:STRING=-O2 -g -DNDEBUG
 
-//C compiler
-CMAKE_C_COMPILER:STRING=/usr/bin/gcc
+//No help, variable specified on the command line.
+CMAKE_C_COMPILER:UNINITIALIZED=gcc
 
 //A wrapper around 'ar' adding the appropriate '--plugin' option
 // for the GCC compiler
@@ -243,7 +246,7 @@ MY_SOURCE_DIR:STATIC=/home/dong/ALLCODE/develop
 PKG_CONFIG_ARGN:STRING=
 
 //pkg-config executable
-PKG_CONFIG_EXECUTABLE:FILEPATH=PKG_CONFIG_EXECUTABLE-NOTFOUND
+PKG_CONFIG_EXECUTABLE:FILEPATH=/usr/bin/pkg-config
 
 //Value Computed by CMake
 client_BINARY_DIR:STATIC=/home/dong/ALLCODE/develop/build/src/client
@@ -264,6 +267,15 @@ log_IS_TOP_LEVEL:STATIC=OFF
 log_SOURCE_DIR:STATIC=/home/dong/ALLCODE/develop/libs/log
 
 //Value Computed by CMake
+my_test_BINARY_DIR:STATIC=/home/dong/ALLCODE/develop/build/libs/my_test
+
+//Value Computed by CMake
+my_test_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+my_test_SOURCE_DIR:STATIC=/home/dong/ALLCODE/develop/libs/my_test
+
+//Value Computed by CMake
 network_BINARY_DIR:STATIC=/home/dong/ALLCODE/develop/build/libs/network
 
 //Value Computed by CMake
@@ -271,6 +283,9 @@ network_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
 network_SOURCE_DIR:STATIC=/home/dong/ALLCODE/develop/libs/network
+
+//Path to a library.
+pkgcfg_lib_PC_GNUTLS_gnutls:FILEPATH=/usr/local/lib/libgnutls.so
 
 //Value Computed by CMake
 server_BINARY_DIR:STATIC=/home/dong/ALLCODE/develop/build/src/server
@@ -292,6 +307,15 @@ ssl_LIB_DEPENDS:STATIC=general;gnutls;
 
 //Value Computed by CMake
 ssl_SOURCE_DIR:STATIC=/home/dong/ALLCODE/develop/libs/ssl
+
+//Value Computed by CMake
+ssl_test_BINARY_DIR:STATIC=/home/dong/ALLCODE/develop/build/tests/ssl
+
+//Value Computed by CMake
+ssl_test_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+ssl_test_SOURCE_DIR:STATIC=/home/dong/ALLCODE/develop/tests/ssl
 
 //Value Computed by CMake
 test_BINARY_DIR:STATIC=/home/dong/ALLCODE/develop/build/libs/test
@@ -407,7 +431,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=9
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=11
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
@@ -451,35 +475,53 @@ CMAKE_UNAME:INTERNAL=/usr/bin/uname
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 //Details about finding GnuTLS
-FIND_PACKAGE_MESSAGE_DETAILS_GnuTLS:INTERNAL=[/usr/lib/x86_64-linux-gnu/libgnutls.so][/usr/include][v()]
+FIND_PACKAGE_MESSAGE_DETAILS_GnuTLS:INTERNAL=[/usr/lib/x86_64-linux-gnu/libgnutls.so][/usr/include][v3.8.0()]
 //ADVANCED property for variable: GNUTLS_INCLUDE_DIR
 GNUTLS_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: GNUTLS_LIBRARY
 GNUTLS_LIBRARY-ADVANCED:INTERNAL=1
-PC_GNUTLS_CFLAGS:INTERNAL=
+PC_GNUTLS_CFLAGS:INTERNAL=-I/usr/local/include;-I/usr/include/p11-kit-1
 PC_GNUTLS_CFLAGS_I:INTERNAL=
 PC_GNUTLS_CFLAGS_OTHER:INTERNAL=
-PC_GNUTLS_FOUND:INTERNAL=
-PC_GNUTLS_INCLUDEDIR:INTERNAL=
-PC_GNUTLS_LIBDIR:INTERNAL=
+PC_GNUTLS_FOUND:INTERNAL=1
+PC_GNUTLS_INCLUDEDIR:INTERNAL=/usr/local/include
+PC_GNUTLS_INCLUDE_DIRS:INTERNAL=/usr/local/include;/usr/include/p11-kit-1
+PC_GNUTLS_LDFLAGS:INTERNAL=-L/usr/local/lib;-lgnutls
+PC_GNUTLS_LDFLAGS_OTHER:INTERNAL=
+PC_GNUTLS_LIBDIR:INTERNAL=/usr/local/lib
+PC_GNUTLS_LIBRARIES:INTERNAL=gnutls
+PC_GNUTLS_LIBRARY_DIRS:INTERNAL=/usr/local/lib
 PC_GNUTLS_LIBS:INTERNAL=
 PC_GNUTLS_LIBS_L:INTERNAL=
 PC_GNUTLS_LIBS_OTHER:INTERNAL=
 PC_GNUTLS_LIBS_PATHS:INTERNAL=
-PC_GNUTLS_MODULE_NAME:INTERNAL=
-PC_GNUTLS_PREFIX:INTERNAL=
-PC_GNUTLS_STATIC_CFLAGS:INTERNAL=
+PC_GNUTLS_MODULE_NAME:INTERNAL=gnutls
+PC_GNUTLS_PREFIX:INTERNAL=/usr/local
+PC_GNUTLS_STATIC_CFLAGS:INTERNAL=-I/usr/local/include;-I/usr/include/p11-kit-1
 PC_GNUTLS_STATIC_CFLAGS_I:INTERNAL=
 PC_GNUTLS_STATIC_CFLAGS_OTHER:INTERNAL=
+PC_GNUTLS_STATIC_INCLUDE_DIRS:INTERNAL=/usr/local/include;/usr/include/p11-kit-1
+PC_GNUTLS_STATIC_LDFLAGS:INTERNAL=-L/usr/local/lib;-L/usr/lib/x86_64-linux-gnu;-lgnutls;-ltspi;-lgmp;-lunistring;-latomic;-lhogweed;-lgmp;-lnettle;-ltasn1;-lidn2;-lunistring;-lp11-kit
+PC_GNUTLS_STATIC_LDFLAGS_OTHER:INTERNAL=
 PC_GNUTLS_STATIC_LIBDIR:INTERNAL=
+PC_GNUTLS_STATIC_LIBRARIES:INTERNAL=gnutls;tspi;gmp;unistring;atomic;hogweed;gmp;nettle;tasn1;idn2;unistring;p11-kit
+PC_GNUTLS_STATIC_LIBRARY_DIRS:INTERNAL=/usr/local/lib;/usr/lib/x86_64-linux-gnu
 PC_GNUTLS_STATIC_LIBS:INTERNAL=
 PC_GNUTLS_STATIC_LIBS_L:INTERNAL=
 PC_GNUTLS_STATIC_LIBS_OTHER:INTERNAL=
 PC_GNUTLS_STATIC_LIBS_PATHS:INTERNAL=
-PC_GNUTLS_VERSION:INTERNAL=
+PC_GNUTLS_VERSION:INTERNAL=3.8.0
+PC_GNUTLS_gnutls_INCLUDEDIR:INTERNAL=
+PC_GNUTLS_gnutls_LIBDIR:INTERNAL=
+PC_GNUTLS_gnutls_PREFIX:INTERNAL=
+PC_GNUTLS_gnutls_VERSION:INTERNAL=
 //ADVANCED property for variable: PKG_CONFIG_ARGN
 PKG_CONFIG_ARGN-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: PKG_CONFIG_EXECUTABLE
 PKG_CONFIG_EXECUTABLE-ADVANCED:INTERNAL=1
+__pkg_config_arguments_PC_GNUTLS:INTERNAL=QUIET;gnutls
 __pkg_config_checked_PC_GNUTLS:INTERNAL=1
+//ADVANCED property for variable: pkgcfg_lib_PC_GNUTLS_gnutls
+pkgcfg_lib_PC_GNUTLS_gnutls-ADVANCED:INTERNAL=1
+prefix_result:INTERNAL=/usr/local/lib
 

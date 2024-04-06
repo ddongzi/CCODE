@@ -13,12 +13,14 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.22.1/CMakeSystem.cmake"
   "../libs/CMakeLists.txt"
   "../libs/log/CMakeLists.txt"
+  "../libs/my_test/CMakeLists.txt"
   "../libs/network/CMakeLists.txt"
   "../libs/ssl/CMakeLists.txt"
-  "../libs/test/CMakeLists.txt"
   "../src/CMakeLists.txt"
   "../src/client/CMakeLists.txt"
   "../src/server/CMakeLists.txt"
+  "../tests/CMakeLists.txt"
+  "../tests/ssl/CMakeLists.txt"
   "/usr/share/cmake-3.22/Modules/CMakeCInformation.cmake"
   "/usr/share/cmake-3.22/Modules/CMakeCXXInformation.cmake"
   "/usr/share/cmake-3.22/Modules/CMakeCommonLanguageInclude.cmake"
@@ -56,9 +58,11 @@ set(CMAKE_MAKEFILE_PRODUCTS
   "src/server/CMakeFiles/CMakeDirectoryInformation.cmake"
   "libs/CMakeFiles/CMakeDirectoryInformation.cmake"
   "libs/log/CMakeFiles/CMakeDirectoryInformation.cmake"
-  "libs/test/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "libs/my_test/CMakeFiles/CMakeDirectoryInformation.cmake"
   "libs/ssl/CMakeFiles/CMakeDirectoryInformation.cmake"
   "libs/network/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "tests/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "tests/ssl/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
@@ -67,7 +71,8 @@ set(CMAKE_DEPEND_INFO_FILES
   "src/client/CMakeFiles/ssl_client.dir/DependInfo.cmake"
   "src/server/CMakeFiles/ssl_server.dir/DependInfo.cmake"
   "libs/log/CMakeFiles/log.dir/DependInfo.cmake"
-  "libs/test/CMakeFiles/test.dir/DependInfo.cmake"
+  "libs/my_test/CMakeFiles/my_test.dir/DependInfo.cmake"
   "libs/ssl/CMakeFiles/ssl.dir/DependInfo.cmake"
   "libs/network/CMakeFiles/network.dir/DependInfo.cmake"
+  "tests/ssl/CMakeFiles/test_print_cipher_suite_list.dir/DependInfo.cmake"
   )

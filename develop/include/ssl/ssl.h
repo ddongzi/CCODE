@@ -39,4 +39,9 @@ typedef struct {
 int fill_ssl_header(uint8_t *msg, size_t size, ssl_header_t * header);
 int fill_ssl_body(uint8_t *msg, ssl_header_t * header, ssl_body_t * body);
 
+
+// ======gnutls封装===
+void print_cipher_suite_list(const char *priorities);
+
+
 #endif //SSL_SSL_H

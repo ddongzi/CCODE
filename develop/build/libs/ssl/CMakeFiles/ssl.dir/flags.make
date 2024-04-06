@@ -4,7 +4,7 @@
 # compile C with /usr/bin/gcc
 C_DEFINES = -Dssl_EXPORTS
 
-C_INCLUDES = -I/home/dong/ALLCODE/develop/include -I/home/dong/ALLCODE/develop/include/ssl
+C_INCLUDES = -I/home/dong/ALLCODE/develop/include -I/home/dong/ALLCODE/develop/include/ssl -I/home/dong/ALLCODE/develop/include/log
 
 C_FLAGS = -g -fPIC -std=gnu11
 

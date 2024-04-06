@@ -9,9 +9,9 @@
 #include <stdlib.h>
 
 #define TEST(name, comment) do { \
-    printf("Running test: %s (%s)\n", #name, comment); \
+    printf("Running my_test: %s (%s)\n", #name, comment); \
     name();             \
-    printf("Passed test: %s (%s)\n", #name, comment); \
+    printf("Passed my_test: %s (%s)\n", #name, comment); \
 } while (0)
 
 #define ASSERT(condition, expect, res) do { \

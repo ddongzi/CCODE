@@ -6,4 +6,7 @@ unpv13e
 unpv13e.tar.gz
 .vscode
 bin
-build
+**build/
+.idea
+guntls
+gnutls/
