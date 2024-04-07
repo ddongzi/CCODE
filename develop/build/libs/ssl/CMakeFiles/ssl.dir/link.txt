@@ -1,1 +1,0 @@
-/usr/bin/gcc -fPIC -g -shared -Wl,-soname,libssl.so -o ../../../library/libssl.so CMakeFiles/ssl.dir/src/main.c.o CMakeFiles/ssl.dir/src/ssl.c.o  -lgnutls 

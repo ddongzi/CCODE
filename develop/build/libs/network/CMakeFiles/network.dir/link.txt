@@ -1,1 +1,0 @@
-/usr/bin/gcc -fPIC -g -shared -Wl,-soname,libnetwork.so -o ../../../library/libnetwork.so CMakeFiles/network.dir/src/base_socket.c.o CMakeFiles/network.dir/src/network.c.o 

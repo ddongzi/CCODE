@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/ssl.dir/main.c.o -o ../../../bin/ssl   -L/home/dong/ALLCODE/develop/library  -Wl,-rpath,/home/dong/ALLCODE/develop/library ../../../library/liblog.so -lgnutls 

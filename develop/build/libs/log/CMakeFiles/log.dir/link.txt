@@ -1,1 +1,0 @@
-/usr/bin/gcc -fPIC -g -shared -Wl,-soname,liblog.so -o ../../../library/liblog.so CMakeFiles/log.dir/src/log.c.o 
