@@ -69,7 +69,42 @@ void my_ssl_communicate(void *arg)
     close_socket(client_socket);
     free(header_ptr);
 }
-
+int handle_data(gnutls_session_t session)
+{
+    int ret;
+    char buffer[MAX_BUF + 1];
+    for (;;) {
+        LOOP_CHECK(ret, gnutls_record_recv(session, buffer,
+                                           MAX_BUF));
+        printf("recv : %s.", buffer);
+        if (ret == 0) {
+            printf("\n- Peer has closed the GnuTLS connection\n");
+            break;
+        } else if (ret < 0 && gnutls_error_is_fatal(ret) == 0) {
+            fprintf(stderr, "*** Warning: %s\n",
+                    gnutls_strerror(ret));
+        } else if (ret < 0) {
+            fprintf(stderr,
+                    "\n*** Received corrupted "
+                    "data(%d). Closing the connection.\n\n",
+                    ret);
+            break;
+        } else if (ret > 0) {
+            /* echo data back to the client
+             */
+            CHECK(gnutls_record_send(session, buffer, ret));
+        }
+    }
+    return ret;
+}
+void close_and_free(gnutls_session_t session, socket_fd_t  sock_fd)
+{
+    // 关闭连接
+    gnutls_bye(session, GNUTLS_SHUT_RDWR);
+    close_socket(sock_fd);
+    gnutls_deinit(session);
+    gnutls_global_deinit();
+}
 void handle_ssl(void *arg)
 {
     socket_fd_t client_socket = (socket_fd_t)(intptr_t)arg;
@@ -90,20 +125,19 @@ void handle_ssl(void *arg)
 
     gnutls_transport_set_int(session, client_socket);
 
-
     ret = gnutls_handshake(session);
     if (ret < 0) {
         fprintf(stderr, "SERVER Handshake failed : %s \n", gnutls_strerror(ret));
-        close_socket(client_socket);
-        gnutls_deinit(session);
-        gnutls_global_deinit();
+        close_and_free(session, client_socket);
         return;
     }
+    ret = handle_data(session);
+    if (ret < 0) {
+        close_and_free(session, client_socket);
+    }
+
     // 关闭连接
-    gnutls_bye(session, GNUTLS_SHUT_RDWR);
-    close_socket(client_socket);
-    gnutls_deinit(session);
-    gnutls_global_deinit();
+    close_and_free(session, client_socket);
 }
 
 void handle_request(void *arg)

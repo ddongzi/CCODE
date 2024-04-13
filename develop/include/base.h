@@ -21,6 +21,7 @@
 
 #define CHECK(x) assert((x) >= 0)
 
+
 typedef enum {
     SUCCESS,
     NOR_ERROR,

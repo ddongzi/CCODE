@@ -5,6 +5,8 @@
 #include "log.h"
 #include <errno.h>
 #include "gnutls/gnutls.h"
+#include "server/server.h"
+
 
 void my_handle_ssl(socket_fd_t sock_fd)
 {
@@ -44,9 +46,39 @@ void close_and_free(gnutls_session_t session, socket_fd_t  sock_fd)
     gnutls_deinit(session);
     gnutls_global_deinit();
 }
+int handle_data(gnutls_session_t session)
+{
+    int ret;
+    char msg[MAX_BUF], buffer[MAX_BUF];
+    int ii, cnt = 0;
+    for (;;cnt += 1) {
+        /* send data */
+        sleep(10);
+        sprintf(msg, "msg:hello-%d", cnt);
+        LOOP_CHECK(ret, gnutls_record_send(session, msg, strlen(msg)));
+
+        LOOP_CHECK(ret, gnutls_record_recv(session, buffer, MAX_BUF));
+        if (ret == 0) {
+            printf("- Peer has closed the TLS connection\n");
+            return ret;
+        } else if (ret < 0 && gnutls_error_is_fatal(ret) == 0) {
+            fprintf(stderr, "*** Warning: %s\n", gnutls_strerror(ret));
+        } else if (ret < 0) {
+            fprintf(stderr, "*** Error: %s\n", gnutls_strerror(ret));
+            return ret;
+        }
+        if (ret > 0) {
+            printf("- Received %d bytes: ", ret);
+            for (ii = 0; ii < ret; ii++) {
+                fputc(buffer[ii], stdout);
+            }
+            fputs("\n", stdout);
+        }
+    }
+}
 void handle_ssl(socket_fd_t sock_fd)
 {
-    char buffer[MAX_BUF + 1], *desc;
+    char  *desc;
     gnutls_datum_t out;
     int type;
     unsigned status;
@@ -108,6 +140,11 @@ void handle_ssl(socket_fd_t sock_fd)
         desc = gnutls_session_get_desc(session);
         printf("- Session info: %s\n", desc);
         gnutls_free(desc);
+
+        ret = handle_data(session);
+        if (ret < 0) {
+            close_and_free(session, sock_fd);
+        }
     }
 
     close_and_free(session, sock_fd);
