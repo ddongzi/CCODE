@@ -11,6 +11,10 @@
 #include <pthread.h>
 #include <errno.h>
 #include "gnutls/gnutls.h"
+
+// 证书结构
+gnutls_certificate_credentials_t x509_cred;
+
 void print_ssl(ssl_header_t *header, ssl_body_t * body)
 {
     LOG_INFO("SSL Header: Length=%u, Version=%u, Type=%u, Time=%ld, ", HEADER_LENGTH_BYTE, header->version, header->type, (long)header->time);
@@ -70,26 +74,19 @@ void handle_ssl(void *arg)
 {
     socket_fd_t client_socket = (socket_fd_t)(intptr_t)arg;
 
-    gnutls_global_init();
     gnutls_session_t session;
-
-    // 设置证书
-    gnutls_certificate_credentials_t x509_cred;
-    gnutls_certificate_allocate_credentials(&x509_cred);
-    gnutls_certificate_set_x509_trust_file(x509_cred, CA_FILE , GNUTLS_X509_FMT_PEM);
-    gnutls_certificate_set_x509_key_file(x509_cred, CERT_FILE, KEY_FILE,
-                                         GNUTLS_X509_FMT_PEM);
 
     // 设置密码套件
 
     int ret;
     gnutls_init(&session, GNUTLS_SERVER);
 
-    const char *suites = "NONE:+VERS-TLS1.0:+RSA:+AES-128-CBC:+SHA1:+MD5";
+    const char *suites = "NONE:+VERS-TLS1.0:+RSA:+AES-128-CBC:+SHA1:+SHA256:+MD5";
     gnutls_priority_set_direct(session, suites, NULL);
 
     gnutls_protocol_t protocol = gnutls_protocol_get_version(session);
     LOG_INFO("SERVER ssl version : %s", gnutls_protocol_get_name(protocol));
+    gnutls_credentials_set(session, GNUTLS_CRD_CERTIFICATE, x509_cred);
 
     gnutls_transport_set_int(session, client_socket);
 
@@ -128,6 +125,15 @@ int main(void )
     LOG_INFO("server listening on port (%d)", SSL_PORT);
 
     pthread_t client_thread;
+
+    gnutls_global_init();
+    // 设置证书
+
+    gnutls_certificate_allocate_credentials(&x509_cred);
+    gnutls_certificate_set_x509_system_trust (x509_cred);
+    gnutls_certificate_set_x509_key_file(x509_cred, CERT_FILE, KEY_FILE,
+                                         GNUTLS_X509_FMT_PEM);
+
 
     while (1) {
         client_socket = accept_client(listen_fd);

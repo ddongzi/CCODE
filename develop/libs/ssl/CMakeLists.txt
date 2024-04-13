@@ -14,7 +14,6 @@ link_directories(${LIBS_PATH})
 link_libraries(log)
 
 # =================链接GNUTLS库================
-link_directories(${GNUTLS_LIB_PATH})
 # 包含 GnuTLS 头文件
 target_include_directories(ssl PRIVATE ${GNUTLS_HEAD_PATH})
 # 链接 GnuTLS 库到可执行文件

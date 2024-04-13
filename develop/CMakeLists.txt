@@ -23,9 +23,10 @@ file(GLOB SRC_LIST ${CMAKE_CURRENT_SOURCE_DIR}/*.c)
 add_executable(main ${SRC_LIST})
 
 # 三方库gnutls
-set(GNUTLS_PATH ${HOME}/3party/gnutls/lib)
-set(GNUTLS_HEAD_PATH ${GNUTLS_PATH}/includes)
-set(GNUTLS_LIB_PATH ${GNUTLS_PATH}/.libs/libgnutls.so)
+set(GNUTLS_HEAD_PATH  /usr/local/include/gnutls/)
+set(GNUTLS_LIB_PATH /usr/local/lib/libgnutls.so)
+
+
 
 # 添加子目录
 add_subdirectory(src)
