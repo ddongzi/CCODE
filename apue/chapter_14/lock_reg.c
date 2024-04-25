@@ -21,3 +21,19 @@ int lock_reg(int fd, int cmd, int type, off_t offset, int whence, off_t len)
 
     return fcntl(fd, cmd, &lock);
 }
+pid_t lock_test(int fd, int type, off_t offset, int whence, off_t len)
+{
+    struct flock flock;
+    flock.l_type = type;
+    flock.l_start = offset;
+    flock.l_whence = whence;
+    flock.l_len = len;
+
+    if (fcntl(fd, F_GETFL, &flock) < 0) {
+        err_sys("fcntl error");
+    }
+    if (flock.l_type == F_UNLCK) {
+        return 0;
+    }
+    return flock.l_pid;
+}

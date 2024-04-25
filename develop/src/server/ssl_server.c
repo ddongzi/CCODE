@@ -90,8 +90,7 @@ int handle_data(gnutls_session_t session)
                     ret);
             break;
         } else if (ret > 0) {
-            /* echo data back to the client
-             */
+            /* echo data back to the client */
             CHECK(gnutls_record_send(session, buffer, ret));
         }
     }
