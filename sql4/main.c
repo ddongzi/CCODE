@@ -79,15 +79,41 @@ typedef struct {
     void *pages[TABLE_MAX_PAGES];
 } pager_t;
 
+/* 单表*/
 typedef struct {
-    uint32_t num_rows;
+    uint32_t num_rows; // 行数
     pager_t* pager;
 } table_t;
 
+/* 代表在table中的位置
+ * 1. 指向表起始和表尾部
+ * 2. 通过cursor 进行insert、select、delete、update， search for a ID , then cursor pointing this ID row。
+ * */
+typedef struct {
+    table_t *table;
+    uint32_t row_idx; // 行号: 0, ,1, 2..
+    bool end_of_table; // 帮助insert
+} cursor_t;
 
 
 void close_input_buffer(input_buffer_t* input_buffer);
 
+/* 创建一个cursor指向 表起始*/
+cursor_t *table_start(table_t *table)
+{
+    cursor_t *cursor = (cursor_t *) malloc(sizeof(cursor_t));
+    cursor->table = table;
+    cursor->row_idx = 0;
+    cursor->end_of_table = (table->num_rows == 0);
+}
+/* 创建一个cursor 指向表尾部*/
+cursor_t *table_end(table_t *table)
+{
+    cursor_t *cursor = (cursor_t *) malloc(sizeof(cursor_t));
+    cursor->table = table;
+    cursor->row_idx = table->num_rows;
+    cursor->end_of_table = true;
+}
 /*
  * 根据page_num获取page：0，1，2....
  * 如果没有命中缓存，从文件读取上来
@@ -183,13 +209,23 @@ void db_close(table_t *table)
     free(pager);
     free(table);
 }
-
-// 定位 : 返回第row_num在table中位置
-void * row_slot(table_t *table, uint32_t row_num)
+/* cursor 后移一行*/
+void cursor_advance(cursor_t *cursor)
 {
-    uint32_t page_num = row_num/ROWS_PER_PAGE;
-    void* page = get_page(table->pager, page_num);
-    uint32_t row_offset = row_num % ROWS_PER_PAGE;
+    cursor->row_idx += 1;
+    if (cursor->row_idx >= cursor->table->num_rows) {
+        cursor->end_of_table = true;
+    }
+}
+
+
+// 通过cursor返回访问字节位置
+void * cursor_value(cursor_t *cursor)
+{
+    uint32_t row_idx = cursor->row_idx;
+    uint32_t page_num = row_idx/ROWS_PER_PAGE;
+    void* page = get_page(cursor->table->pager, page_num);
+    uint32_t row_offset = row_idx % ROWS_PER_PAGE;
     uint32_t byte_offset = row_offset * ROW_SIZE;
     return page + byte_offset;
 }
@@ -218,10 +254,13 @@ void deserialize_row(void* source, row_t* destination) {
 execute_res execute_select(sql_statement * statement, table_t * table)
 {
     row_t row;
-    for (uint32_t i = 0; i < table->num_rows; ++i) {
-        deserialize_row(row_slot(table, i), &row);
+    cursor_t *cursor = table_start(table);
+    while (!cursor->end_of_table) {
+        deserialize_row(cursor_value(cursor), &row);
         print_row(&row);
+        cursor_advance(cursor);
     }
+    free(cursor);
     return EXECUTE_SUCCESS;
 }
 
@@ -232,11 +271,15 @@ execute_res execute_insert(sql_statement* statement, table_t* table)
         return EXECUTE_TABLE_FULL;
     }
     row_t* row = &(statement->row_to_insert);
-    serialize_row(row, row_slot(table, table->num_rows));
+    cursor_t *cursor = table_end(table);
+    serialize_row(row, cursor_value(cursor));
     table->num_rows += 1;
+    free(cursor);
     return EXECUTE_SUCCESS;
 }
-/*执行SQL 语句*/
+/*
+ * virtual machines
+ * */
 execute_res execute_statement(sql_statement *statement, table_t *table)
 {
     switch (statement->type) {

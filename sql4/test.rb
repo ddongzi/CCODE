@@ -4,7 +4,7 @@ require 'rspec'
 describe 'database' do
   def run_script(commands)
     raw_output = nil
-    IO.popen("./db", "r+") do |pipe|
+    IO.popen("./db mydb.db", "r+") do |pipe|
       commands.each do |command|
         unless pipe.closed?
             pipe.puts command
