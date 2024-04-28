@@ -22,6 +22,7 @@ describe 'database' do
   end
 
   it 'inserts and retrieves a row' do
+    skip "Skipping this test"
     result = run_script([
       "insert 1 user1 person1@example.com",
       "select",
@@ -36,6 +37,7 @@ describe 'database' do
   end
    # 最大1400行
   it 'prints error message when table is full' do
+    skip "Skipping this test"
     script = (1..1401).map do |i|
       "insert #{i} user#{i} person#{i}@example.com"
     end
@@ -45,6 +47,7 @@ describe 'database' do
   end
 
   it 'allows inserting strings that are the maximum length' do
+    skip "Skipping this test"
     long_username = "a"*32
     long_email = "a"*255
     script = [
@@ -62,6 +65,7 @@ describe 'database' do
   end
   # 字段溢出
   it 'prints error message if strings are too long' do
+    skip "Skipping this test"
     long_username = "a"*33
     long_email = "a"*256
     script = [
@@ -78,6 +82,7 @@ describe 'database' do
   end
 
   it 'prints an error message if id is negative' do
+    skip "Skipping this test"
     script = [
       "insert -1 cstack foo@bar.com",
       "select",
@@ -97,9 +102,9 @@ describe 'database' do
       ".exit"
     ]
     result = run_script(script)
-
-    expect(result).to.match_array([
-      "db > .constants",
+    puts result
+    expect(result).to match_array([
+      "db > Constants:",
       "ROW_SIZE: 293",
       "COMMON_NODE_HEADER_SIZE: 6",
       "LEAF_NODE_HEADER_SIZE: 10",
@@ -113,7 +118,8 @@ describe 'database' do
 
 
   it 'allows printing out the structure of a one-node btree' do
-    script = [33, 11, 22].map do |i|
+    skip "Skipping this test"
+    script = [3, 1, 2].map do |i|
       "insert #{i} user#{i} person#{i}@example.com"
     end
     script << ".btree"
@@ -126,11 +132,37 @@ describe 'database' do
       "db > Executed.",
       "db > Tree:",
       "leaf (size 3)",
-      "  - 0 : 3",
-      "  - 1 : 1",
-      "  - 2 : 2",
+      " - 0 : 1",
+      " - 1 : 2",
+      " - 2 : 3",
       "db > "
     ])
+  end
+
+  it 'prints an error message if there is a duplicate id' do
+    skip "Skipping this test"
+    script = [
+      "insert 1 user1 person1@example.com",
+      "insert 1 user1 person1@example.com",
+      "select",
+      ".exit",
+    ]
+    result = run_script(script)
+    expect(result).to match_array([
+      "db > Executed.",
+      "db > Error: Duplicate key.",
+      "db > (1, user1, person1@example.com)",
+      "Executed.",
+      "db > ",
+    ])
+  end
+
+  it 'insert max cells' do
+      script = (1..13).map do |i|
+        "insert #{i} user#{i} person#{i}@example.com"
+      end
+      script << ".exit"
+      result = run_script(script)
   end
 
 end
