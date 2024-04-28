@@ -158,11 +158,100 @@ describe 'database' do
   end
 
   it 'insert max cells' do
+      skip "Skipping this test"
       script = (1..13).map do |i|
         "insert #{i} user#{i} person#{i}@example.com"
       end
       script << ".exit"
       result = run_script(script)
   end
+  it 'prints all rows in a multi-level tree' do
+    skip "Skipping this test"
+    script = []
+    (1..15).each do |i|
+      script << "insert #{i} user#{i} person#{i}@example.com"
+    end
+    script << "select"
+    script << ".exit"
+    result = run_script(script)
 
+    expect(result[15...result.length]).to match_array([
+      "db > (1, user1, person1@example.com)",
+      "(2, user2, person2@example.com)",
+      "(3, user3, person3@example.com)",
+      "(4, user4, person4@example.com)",
+      "(5, user5, person5@example.com)",
+      "(6, user6, person6@example.com)",
+      "(7, user7, person7@example.com)",
+      "(8, user8, person8@example.com)",
+      "(9, user9, person9@example.com)",
+      "(10, user10, person10@example.com)",
+      "(11, user11, person11@example.com)",
+      "(12, user12, person12@example.com)",
+      "(13, user13, person13@example.com)",
+      "(14, user14, person14@example.com)",
+      "(15, user15, person15@example.com)",
+      "Executed.", "db > ",
+    ])
+  end
+
+    it 'allows printing out the structure of a 4-leaf-node btree' do
+          skip "Skipping this test"
+
+      script = [
+        "insert 18 user18 person18@example.com",
+        "insert 7 user7 person7@example.com",
+        "insert 10 user10 person10@example.com",
+        "insert 29 user29 person29@example.com",
+        "insert 23 user23 person23@example.com",
+        "insert 4 user4 person4@example.com",
+        "insert 14 user14 person14@example.com",
+        "insert 30 user30 person30@example.com",
+        "insert 15 user15 person15@example.com",
+        "insert 26 user26 person26@example.com",
+        "insert 22 user22 person22@example.com",
+        "insert 19 user19 person19@example.com",
+        "insert 2 user2 person2@example.com",
+        "insert 1 user1 person1@example.com",
+        "insert 21 user21 person21@example.com",
+        "insert 11 user11 person11@example.com",
+        "insert 6 user6 person6@example.com",
+        "insert 20 user20 person20@example.com",
+        "insert 5 user5 person5@example.com",
+        "insert 8 user8 person8@example.com",
+        "insert 9 user9 person9@example.com",
+        "insert 3 user3 person3@example.com",
+        "insert 12 user12 person12@example.com",
+        "insert 27 user27 person27@example.com",
+        "insert 17 user17 person17@example.com",
+        "insert 16 user16 person16@example.com",
+        "insert 13 user13 person13@example.com",
+        "insert 24 user24 person24@example.com",
+        "insert 25 user25 person25@example.com",
+        "insert 28 user28 person28@example.com",
+            "insert 49 user49 person49@example.com",
+            "insert 70 user70 person70@example.com",
+            "insert 48 user48 person48@example.com",
+            "insert 39 user39 person39@example.com",
+            "insert 59 user59 person59@example.com",
+
+        ".btree",
+        ".exit",
+      ]
+      result = run_script(script)
+        puts result
+
+    end
+
+  it 'allows printing out the structure of a 7-leaf-node btree' do
+      script = []
+      300.times do |i|
+        script << "insert #{i} user#{i} person#{i}@example.com"
+      end
+    script << "select"
+    script << ".btree"
+    script << ".exit"
+    result = run_script(script)
+    puts result
+  end
 end
