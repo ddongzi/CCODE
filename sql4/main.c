@@ -919,6 +919,7 @@ table_t *db_open(const char *file_name)
     return table;
 }
 
+// TODO extend pwd-mgr : web - name - pwd
 /* 处理insert*/
 prepare_res_type prepare_insert(input_buffer_t* input_buffer, sql_statement *statement)
 {
