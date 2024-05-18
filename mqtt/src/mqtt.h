@@ -63,6 +63,17 @@ union mqtt_header {
     } bits;
 };
 
+
+/*
+| field |   size        | offset| description   |
+| type  |   (4bit)      |   0   |               |
+|length |   1B          |  1    |               |
+|proto
+
+
+
+*/
+
 /* mqtt_ connect packet*/
 struct mqtt_connect {
     union mqtt_header header;
@@ -77,7 +88,7 @@ struct mqtt_connect {
             unsigned will_retain : 1; // 遗嘱消息是否保留
             unsigned password : 1; // 客户端提供密码链接
             unsigned username : 1;
-        };
+        } bits;
     };
     struct {
         unsigned short keepalive; // 连接保活周期
@@ -163,7 +174,7 @@ union mqtt_packet {
     struct mqtt_unsubscribe unsubscribe;
 };
 
-/* mqtt_packet 解码编码为 某一类型结构体*/
+/* mqtt_packet 解码编码*/
 int mqtt_encode_length(unsigned char *, size_t);
 unsigned long long mqtt_decode_length(const char **);
 int unpack_mqtt_packet(const unsigned char *, union mqtt_packet *);
