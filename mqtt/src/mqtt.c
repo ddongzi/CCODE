@@ -173,6 +173,7 @@ int unpack_mqtt_packet(const unsigned char *buf, union mqtt_packet *pkt)
     int rc = 0;
     unsigned char type = *buf;
     union mqtt_header header = {.byte = type};
+    // 简单消息只需要处理fix header， 没有可变头部或者负载
     if (header.bits.type == DISCONNECT ||
         header.bits.type == PINGREQ ||
         header.bits.type == PINGRESP
