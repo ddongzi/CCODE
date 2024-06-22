@@ -7,13 +7,17 @@
 #include <errno.h>
 #include <pthread.h>
 #include <stdarg.h>
+#include "net_utils.h"
+#include "log.h"
 
 #define BUFFER_SIZE 1024
 
 // 全局配置参数
-int port = 12345;
+int port = -1;
 int hash_table_size = 100;
-int max_cache_size = 1000;
+int max_cache_size = 5;
+
+int is_running = 1;
 
 typedef struct Entry
 {
@@ -26,24 +30,6 @@ typedef struct Entry
 Entry **hash_table = NULL;
 int server_fd = -1;
 int cache_size = 0;
-
-void log_message(const char *format, ...)
-{
-    FILE *logfile = fopen("server.log", "a");
-    if (logfile == NULL)
-    {
-        perror("Could not open log file");
-        return;
-    }
-
-    va_list args;
-    va_start(args, format);
-    vfprintf(logfile, format, args);
-    va_end(args);
-
-    fprintf(logfile, "\n");
-    fclose(logfile);
-}
 
 void load_config(const char *filename)
 {
@@ -70,15 +56,8 @@ void load_config(const char *filename)
             max_cache_size = atoi(line + 15);
         }
     }
-    log_message("CONFIG port: %d , max_hash_table_size: %d, max_cache_size: %d\n", port, hash_table_size, max_cache_size);
+    log_info("CONFIG port: %d , max_hash_table_size: %d, max_cache_size: %d\n", port, hash_table_size, max_cache_size);
     fclose(file);
-}
-
-void send_response(int socket, const char *response)
-{
-    char buffer[BUFFER_SIZE];
-    snprintf(buffer, BUFFER_SIZE, "%s\n", response);
-    send(socket, buffer, strlen(buffer), 0);
 }
 
 unsigned int hash(const char *key)
@@ -90,7 +69,8 @@ unsigned int hash(const char *key)
     }
     return hash % hash_table_size;
 }
-void delete_lru_entry() {
+void delete_lru_entry()
+{
     // 初始化 oldest 为当前时间之前的一秒
     time_t oldest = time(NULL);
     int oldest_index = -1;
@@ -98,13 +78,16 @@ void delete_lru_entry() {
     Entry *prev_oldest_entry = NULL;
 
     // 遍历哈希表查找最老的条目
-    for (int i = 0; i < hash_table_size; ++i) {
+    for (int i = 0; i < hash_table_size; ++i)
+    {
         Entry *entry = hash_table[i];
         Entry *prev = NULL;
-        while (entry) {
+        while (entry)
+        {
             // 记录遍历的条目以便调试
-            log_message("Checking entry key: %s, last_accessed: %ld\n", entry->key, entry->last_accessed);
-            if (entry->last_accessed <= oldest) {
+            log_info("Checking entry key: %s, last_accessed: %ld\n", entry->key, entry->last_accessed);
+            if (entry->last_accessed <= oldest)
+            {
                 oldest = entry->last_accessed;
                 oldest_index = i;
                 oldest_entry = entry;
@@ -116,19 +99,25 @@ void delete_lru_entry() {
     }
 
     // 如果找到了最老的条目，删除它
-    if (oldest_entry) {
-        log_message("Deleting oldest entry - key: %s, value: %s\n", oldest_entry->key, oldest_entry->value);
-        if (prev_oldest_entry) {
+    if (oldest_entry)
+    {
+        log_info("Deleting oldest entry - key: %s, value: %s\n", oldest_entry->key, oldest_entry->value);
+        if (prev_oldest_entry)
+        {
             prev_oldest_entry->next = oldest_entry->next;
-        } else {
+        }
+        else
+        {
             hash_table[oldest_index] = oldest_entry->next;
         }
         free(oldest_entry->key);
         free(oldest_entry->value);
         free(oldest_entry);
         cache_size--;
-    } else {
-        log_message("No oldest entry found to delete.\n");
+    }
+    else
+    {
+        log_info("No oldest entry found to delete.\n");
     }
 }
 
@@ -152,7 +141,6 @@ void put(const char *key, const char *value)
         entry = entry->next;
     }
     // 插入新条目前检查缓存大小
-    log_message("cache_size: %d\n", cache_size);
     if (cache_size >= max_cache_size)
     {
         // 删除最少使用的条目
@@ -230,11 +218,10 @@ void update(const char *key, const char *value)
     // 如果键不存在，则插入新键值对
     put(key, value);
 }
-void handle_command(const char *command, int new_socket)
+void handle_command(const Message *msg, int new_socket)
 {
     char cmd[BUFFER_SIZE], key[BUFFER_SIZE], value[BUFFER_SIZE];
-    int num_args = sscanf(command, "%s %s %s", cmd, key, value);
-
+    int num_args = sscanf(msg->command, "%s", cmd);
     if (num_args < 1)
     {
         send_response(new_socket, "ERROR: Invalid command");
@@ -243,7 +230,8 @@ void handle_command(const char *command, int new_socket)
 
     if (strcmp(cmd, "PUT") == 0)
     {
-        if (num_args != 3)
+        int args = sscanf(msg->payload, "%s %s", key, value);
+        if (args != 2)
         {
             send_response(new_socket, "ERROR: PUT command requires key and value");
             return;
@@ -253,7 +241,8 @@ void handle_command(const char *command, int new_socket)
     }
     else if (strcmp(cmd, "GET") == 0)
     {
-        if (num_args != 2)
+        int args = sscanf(msg->payload, "%s", key);
+        if (args != 1)
         {
             send_response(new_socket, "ERROR: GET command requires key");
             return;
@@ -270,7 +259,8 @@ void handle_command(const char *command, int new_socket)
     }
     else if (strcmp(cmd, "DELETE") == 0)
     {
-        if (num_args != 2)
+        int args = sscanf(msg->payload, "%s", key);
+        if (args != 1)
         {
             send_response(new_socket, "ERROR: DELETE command requires key");
             return;
@@ -367,54 +357,142 @@ void cleanup(void)
 }
 
 // 处理客户端请求的线程函数
-void *client_handler(void *socket_desc)
+void *handle_client_command(void *arg)
 {
-    int new_socket = *(int *)socket_desc;
-    char buffer[BUFFER_SIZE] = {0};
+    ThreadArgs *thread_args = (ThreadArgs *)arg;
+    int client_socket = thread_args->socket;
+    Message *msg = &thread_args->message;
 
-    while (!stop)
+    log_info("Handling client command from %s: %s %s\n", msg->source, msg->command, msg->payload);
+    handle_command(msg, client_socket);
+    close(client_socket);
+}
+void start_self()
+{
+    // Your startup logic here
+    is_running = 1;
+}
+void run_server()
+{
+    int server_fd = start_server(port);
+    int client_socket;
+    struct sockaddr_in address;
+    socklen_t addrlen = sizeof(address);
+
+    log_info("Node is listening on port %d\n", port);
+
+    while (is_running)
     {
-        // 清空缓冲区
-        memset(buffer, 0, BUFFER_SIZE);
-
-        // 读取客户端数据
-        int bytes_read = read(new_socket, buffer, BUFFER_SIZE);
-        if (bytes_read <= 0)
+        if ((client_socket = accept(server_fd, (struct sockaddr *)&address, &addrlen)) < 0)
         {
-            // 客户端关闭连接或读取错误
-            if (errno == EINTR)
+            if (stop)
             {
-                // 如果 read 被信号中断，重试读取
-                log_message("Interrupted read, retrying...\n");
-                continue;
+                break; // 如果停止标志被设置，则跳出循环
             }
-            break;
+            perror("accept");
+            exit(EXIT_FAILURE);
         }
 
-        log_message("Received: %s\n", buffer);
-
-        // 处理命令
-        handle_command(buffer, new_socket);
-
-        if (strncmp(buffer, "QUIT", 4) == 0)
-        {
-            break;
-        }
+        handle_connection(client_socket);
     }
 
-    close(new_socket);
-    free(socket_desc);
+    close(server_fd);
+}
+// 处理节点命令
+void *handle_node_command(void *arg)
+{
+    ThreadArgs *thread_args = (ThreadArgs *)arg;
+    int node_socket = thread_args->socket;
+    Message *msg = &thread_args->message;
+
+    log_info("Handling node command from %s: %s\n", msg->source, msg->command);
+
+    if (strcmp(msg->command, "START") == 0)
+    {
+        start_self();
+        send(node_socket, "STARTED", strlen("STARTED"), 0);
+    }
+    else if (strcmp(msg->command, "STOP") == 0)
+    {
+        send(node_socket, "STOPPED", strlen("STOPPED"), 0);
+    }
+    else if (strcmp(msg->command, "PING") == 0)
+    {
+        send(node_socket, "PONG", strlen("PONG"), 0);
+    }
+    else
+    {
+        send(node_socket, "UNKNOWN NODE COMMAND", strlen("UNKNOWN NODE COMMAND"), 0);
+    }
+
+    close(node_socket);
     pthread_exit(NULL);
 }
-
-int main()
+// 处理传入连接
+void handle_connection(int new_socket)
 {
+    ssize_t bytes_received;
+
+    while (1) { // 循环接收消息
+        Message msg;
+        /* code */
+        bytes_received = receive_message(new_socket, &msg);
+
+        if (bytes_received < 0) {
+            perror("recv failed");
+            close(new_socket);
+            return;
+        } else if (bytes_received == 0) {
+            // 连接被关闭
+            printf("Connection closed by peer.\n");
+            close(new_socket);
+            return;
+        }
+
+        ThreadArgs *thread_args = malloc(sizeof(ThreadArgs));
+        thread_args->socket = new_socket;
+        thread_args->message = msg;
+
+        pthread_t thread;
+        if (strcmp(msg.source, "CLIENT") == 0)
+        {
+            if (pthread_create(&thread, NULL, handle_client_command, thread_args) < 0)
+            {
+                perror("could not create client thread");
+                free(thread_args);
+            }
+        }
+        else if (strcmp(msg.source, "NODE") == 0)
+        {
+            if (pthread_create(&thread, NULL, handle_node_command, thread_args) < 0)
+            {
+                perror("could not create node thread");
+                free(thread_args);
+            }
+        }
+        else
+        {
+            log_info("Unknown source: %s\n", msg.source);
+            free(thread_args);
+        }
+    }
+}
+
+int main(int argc, char *argv[])
+{
+    if (argc != 2)
+    {
+        fprintf(stderr, "Usage: %s <port>\n", argv[0]);
+        exit(EXIT_FAILURE);
+    }
+
     int new_socket;
     struct sockaddr_in address;
     int opt = 1;
     int addrlen = sizeof(address);
 
-    load_config("config.cfg");
+    // load_config("config.cfg");
+    port = atoi(argv[1]);
 
     // 设置信号处理器
     setup_signal_handlers();
@@ -428,62 +506,8 @@ int main()
     // 加载数据
     load_data("data.txt");
 
-    // 创建 socket 文件描述符
-    if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0)
-    {
-        perror("socket failed");
-        exit(EXIT_FAILURE);
-    }
-
-    // 将 socket 绑定到端口
-    if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)))
-    {
-        perror("setsockopt");
-        exit(EXIT_FAILURE);
-    }
-    address.sin_family = AF_INET;
-    address.sin_addr.s_addr = INADDR_ANY;
-    address.sin_port = htons(port);
-
-    if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0)
-    {
-        perror("bind failed");
-        exit(EXIT_FAILURE);
-    }
-
-    // 监听端口
-    if (listen(server_fd, 3) < 0)
-    {
-        perror("listen");
-        exit(EXIT_FAILURE);
-    }
-
-    log_message("Server is listening on port %d\n", port);
-
-    while (!stop)
-    {
-        // 接受客户端连接
-        if ((new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t *)&addrlen)) < 0)
-        {
-            if (stop)
-            {
-                break; // 如果停止标志被设置，则跳出循环
-            }
-            perror("accept");
-            exit(EXIT_FAILURE);
-        }
-
-        pthread_t client_thread;
-        int *new_sock = malloc(sizeof(int));
-        *new_sock = new_socket;
-        if (pthread_create(&client_thread, NULL, client_handler, (void *)new_sock) < 0)
-        {
-            perror("could not create thread");
-            free(new_sock);
-            continue;
-        }
-        pthread_detach(client_thread); // 线程分离，防止内存泄漏
-    }
+    // 创建服务器套接字文件描述符
+    run_server();
 
     // 保存数据
     save_data("data.txt");

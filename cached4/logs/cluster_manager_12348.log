@@ -1,0 +1,3 @@
+13:47:23 INFO  cluster_manager.c:78: Starting cluster...
+13:47:23 INFO  net_utils.c:214: BUFFER VIEW 00000000  0e 00 40 00 42 00 41 00  06 00 00 00 04 00 00 00  |..@.B.A.........|
+13:47:23 INFO  net_utils.c:214: BUFFER VIEW 00000010  40 00 00 00 00 00 00 00  40 00 00 00 00 00        |@.......@.....  |

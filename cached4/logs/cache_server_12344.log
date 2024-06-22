@@ -1,0 +1,7 @@
+13:47:20 INFO  cache_server.c:382: Node is listening on port 12344
+
+13:47:23 INFO  net_utils.c:214: BUFFER VIEW 00000000  4e 4f 44 45 3a 65 3a 00  06 00 00 00 04 00 00 00  |NODE:e:.........|
+13:47:23 INFO  net_utils.c:214: BUFFER VIEW 00000010  40 00 00 00 00 00 00 00  40 00 00 00 00 00        |@.......@.....  |
+13:47:23 INFO  net_utils.c:157: deserialized message: source=NODE:e:, command=, payload=
+13:47:23 INFO  cache_server.c:475: Unknown source: NODE:e:
+
