@@ -4,7 +4,7 @@ mbedtls
 Tinyhttpd
 unpv13e
 unpv13e.tar.gz
-.vscode
+.vscode/
 bin
 **build/
 *.idea/
