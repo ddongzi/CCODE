@@ -8,7 +8,7 @@ unpv13e.tar.gz
 bin
 **build/
 *.idea/
-
+apue.3e/
 guntls
 gnutls/
 3party/
