@@ -940,6 +940,7 @@ void leaf_node_underflow(cursor_t* cursor)
     void *right_sibling = right_sibling_page_num != INVALID_PAGE_NUM ? get_page(cursor->table->pager, right_sibling_page_num) : NULL;
 
     // 优先从左兄弟节点借元素
+    // TODO
     if (left_sibling && *leaf_node_num_cells(left_sibling) > LEAF_NODE_MIN_CELLS) {
         printf("borrowing from left brother \n");
         borrow_from_left_sibling(cursor, left_sibling, parent);
