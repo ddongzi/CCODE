@@ -66,6 +66,9 @@ struct editorConfig E; // editor全局状态
 
 /*** prototypes ***/
 void editor_set_status_msg(const char *fmt, ...);
+char *editor_prompt(char *prompt);
+void editorRefreshScreen();
+void editor_find();
 
 /*** 行row操作 ***/
 
@@ -216,6 +219,22 @@ void editor_enter_newline()
     }
     E.cy++;
     E.cx = 0;
+}
+
+// 012    78
+int editor_row_rx_to_cx(erow_t *row, int rx)
+{
+    int cur_rx = 0;
+    int cx;
+    for (cx = 0; cx < row->size; cx++)
+    {
+        if (row->chars[cx] == '\t')
+            cur_rx += (KILO_TAB_STOP - 1) - (cur_rx % KILO_TAB_STOP);
+        cur_rx++;
+        if (cur_rx > rx)
+            return cx;
+    }
+    return cx;
 }
 
 /*** 分区：terminal ***/
@@ -463,7 +482,14 @@ void editorOpen(char *filename)
 void editor_save()
 {
     if (E.filename == NULL)
-        return;
+    {
+        E.filename = editor_prompt("Save as : %s");
+        if (E.filename == NULL)
+        {
+            editor_set_status_msg("Save aborted");
+            return;
+        }
+    }
 
     int len;
     char *buf = editor_row_to_string(&len);
@@ -558,6 +584,9 @@ void editorProcessKeypress()
     case CTRL_KEY('s'):
         editor_save();
         break;
+    case CTRL_KEY('f'):
+        editor_find();
+        break;
     case BACKSPACE:
         // 删除光标左侧内容，光标左移
         editorMoveCursor(ARROW_LEFT);
@@ -574,6 +603,57 @@ void editorProcessKeypress()
         break;
     }
     quit_times = KILO_QUIT_TIMES;
+}
+
+// 显示一个提示在status bar.  并且接受用户输入
+char *editor_prompt(char *prompt)
+{
+    size_t bufsize = 128;
+    char *buf = malloc(bufsize);
+    size_t buflen = 0;
+    buf[0] = '\0';
+
+    while (1)
+    {
+        editor_set_status_msg(prompt, buf);
+        editorRefreshScreen();
+
+        int c = editorReadKey();
+        if (c == BACKSPACE)
+        {
+            if (buflen != 0)
+            {
+                buf[--buflen] = '\0';
+            }
+        }
+        else if (c == '\x1b')
+        {
+            // ESC 取消输入
+            editor_set_status_msg("");
+            free(buf);
+            return NULL;
+        }
+        else if (c == '\r')
+        {
+            if (buflen != 0)
+            {
+                // buf有内容，且此时enter，就获取到了输入的 文件名
+                editor_set_status_msg(""); // 清空状态信息
+                return buf;
+            }
+        }
+        else if (!iscntrl(c) && c < 128)
+        {
+            // 非ctrl键，并且按键字符在ascii 128以内
+            if (buflen == bufsize - 1)
+            {
+                bufsize *= 2;
+                buf = realloc(buf, bufsize);
+            }
+            buf[buflen++] = c;
+            buf[buflen] = '\0';
+        }
+    }
 }
 
 /* output */
@@ -721,6 +801,7 @@ void editorRefreshScreen()
     abFree(&ab);
 }
 
+// 可变参数 及 fmt 设置到status msg
 void editor_set_status_msg(const char *fmt, ...)
 {
     va_list ap;
@@ -728,6 +809,31 @@ void editor_set_status_msg(const char *fmt, ...)
     vsnprintf(E.statusmsg, sizeof(E.statusmsg), fmt, ap);
     va_end(ap);
     E.statusmsg_time = time(NULL);
+}
+
+/*** find ***/
+// 查找一个string, 如果找到光标移动上匹配的哪一行
+void editor_find()
+{
+    char *query = editor_prompt("Search : %s (ESC to cancel).");
+    if (query == NULL)
+        return;
+
+    int i = 0;
+    for (i = 0; i < E.numrows; i++)
+    {
+        erow_t *row = &E.rows[i];
+        char *match = strstr(row->render, query);
+        if (match)
+        {
+            E.cy = i;
+            E.cx = editor_row_rx_to_cx(row, match - row->render);
+
+            E.rowoff = E.numrows; // 使得scroll时候，光标行设置为偏移行
+            break;
+        }
+    }
+    free(query);
 }
 
 /* init */
