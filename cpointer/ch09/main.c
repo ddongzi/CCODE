@@ -194,6 +194,9 @@ int format(char *format_string, char const *digit_string)
     printf("%s\n", format_string);
 }
 
+struct A {
+    int a;
+} x;
 
 int main(int argc, char const *argv[])
 {
