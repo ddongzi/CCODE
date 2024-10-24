@@ -979,6 +979,20 @@ meta_cmd_res do_meta_command(input_buffer_t *input_buffer, table_t *table)
         printf("Tree:\n");
         print_tree(table->pager, 0, 0);
         return META_COMMAND_SUCCESS;
+    } else if (strcmp(input_buffer->buffer, ".help") == 0) {
+        printf("Help:\n");
+        printf("Meta command:\n");
+        printf("\t.exit [] exit\n");
+        printf("\t.constants [] constants\n");
+        printf("\t.btree [] btree\n");
+        printf("\t.help [] help\n");
+
+        printf("SQL command:\n");
+        printf("\t.select [name][email] select\n");
+        printf("\t.insert [] insert\n");
+
+
+        return META_COMMAND_SUCCESS;
     } else {
         return META_COMMAND_UNRECOGNIZED_COMMAND;
     }
