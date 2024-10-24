@@ -4,19 +4,13 @@ require 'rspec'
 describe 'database' do
   def run_script(commands)
     raw_output = nil
-    IO.popen("./db mydb.db", "r+") do |pipe|
+    IO.popen("./db my.db", "r+") do |pipe|
       commands.each do |command|
-        unless pipe.closed?
-            pipe.puts command
-        else
-         puts "Error: PIPE is closed."
-        end
+        pipe.puts command
       end
 
       pipe.close_write
-
-      # Read entire output
-      raw_output = pipe.gets(nil)
+      raw_output = pipe.read  # 使用 read 读取所有输出
     end
     raw_output.split("\n")
   end
@@ -196,7 +190,7 @@ describe 'database' do
   end
 
     it 'allows printing out the structure of a 4-leaf-node btree' do
-          skip "Skipping this test"
+  #        skip "Skipping this test"
 
       script = [
         "insert 18 user18 person18@example.com",
