@@ -160,7 +160,7 @@ describe 'database' do
       result = run_script(script)
   end
   it 'prints all rows in a multi-level tree' do
-    #skip "Skipping this test"
+    skip "Skipping this test"
     script = []
     (1..15).each do |i|
       script << "insert #{i} user#{i} person#{i}@example.com"
@@ -190,7 +190,7 @@ describe 'database' do
   end
 
     it 'allows printing out the structure of a 4-leaf-node btree' do
-      skip "Skipping this test"
+      #skip "Skipping this test"
 
       script = [
         "insert 18 user18 person18@example.com",
