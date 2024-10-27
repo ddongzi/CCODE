@@ -113,7 +113,7 @@ typedef enum {NODE_INTERNAL, NODE_LEAF} node_type;
  * | Node Type (uint8_t)      | 1 byte    | 
  * | Is Root (uint8_t)        | 1 byte    | 
  * | Parent Pointer (uint32_t)| 4 bytes   | root节点parent是Invalid_page_num
- * / Page num                 | 4 bytes   |
+ * / Page num                 | 4 bytes   | // TODO
  * |--------------------------------------|
  * | Total Header Size        | 6 bytes   |
  * =========================================
@@ -198,7 +198,7 @@ void *leaf_node_right_bro(void *node);
 
 /* Internal Node header layout */
 
-const uint32_t INTERNAL_NODE_NUM_KEYS_SIZE = sizeof(uint32_t); // TODO ?
+const uint32_t INTERNAL_NODE_NUM_KEYS_SIZE = sizeof(uint32_t); // 
 const uint32_t INTERNAL_NODE_NUM_KEYS_OFFSET = COMMON_NODE_HEADER_SIZE;
 const uint32_t INTERNAL_NODE_RIGHT_CHILD_SIZE = sizeof(uint32_t);
 const uint32_t INTERNAL_NODE_RIGHT_CHILD_OFFSET = INTERNAL_NODE_NUM_KEYS_OFFSET + // 最右侧孩子的page_num
@@ -322,7 +322,6 @@ uint32_t* internal_node_child(void* node, uint32_t cell_num)
         printf("Tried to access child_num %d> num_keys %d\n", cell_num, num_keys);
         exit(EXIT_FAILURE);
     } else if (cell_num == num_keys) {
-        // TODO
         uint32_t *right_child = internal_node_right_child(node);
         if (*right_child == INVALID_PAGE_NUM) {
             printf("Tried to access right child of node , but was invalid page.\n");
@@ -752,7 +751,6 @@ void leaf_node_split_and_insert(cursor_t *cursor, uint32_t key, row_t *val)
         uint32_t parent_page_num = *node_parent(old_node);
         uint32_t new_max = get_node_max_key(cursor->table->pager, old_node);
         void *parent = get_page(cursor->table->pager, parent_page_num);
-        // TODO ?
         // 1. 更新内部节点中的key， 2. 对新建的页（右侧），创建内部节点的cell
         update_internal_node_key(parent, old_max, new_max);
         internal_node_insert(cursor->table, parent_page_num, new_page_num);
@@ -865,7 +863,6 @@ void create_new_root(table_t *table, uint32_t right_child_page_num)
     set_node_root(left_child, false);
 
     if (get_node_type(left_child) == NODE_INTERNAL) {
-        // TODO ?
         void *child;
         for (int i = 0; i < *internal_node_num_keys(left_child); ++i) {
             child = get_page(table->pager, *internal_node_child(left_child, i));
@@ -878,7 +875,7 @@ void create_new_root(table_t *table, uint32_t right_child_page_num)
     /* 初始化根节点 */
     initialize_internal_node(root);
     set_node_root(root, true);
-    *internal_node_num_keys(root) = 1; //TODO
+    *internal_node_num_keys(root) = 1; 
     *internal_node_child(root, 0) = left_child_page_num;
     uint32_t left_child_max_key = get_node_max_key(table->pager, left_child);
     *internal_node_key(root, 0) = left_child_max_key;
@@ -1203,7 +1200,6 @@ table_t *db_open(const char *file_name)
     return table;
 }
 
-// TODO extend pwd-mgr : web - name - pwd
 /* 处理insert*/
 prepare_res_type prepare_insert(input_buffer_t* input_buffer, sql_statement *statement)
 {
