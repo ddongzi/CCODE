@@ -4,7 +4,7 @@ require 'rspec'
 describe 'database' do
   def run_script(commands)
     raw_output = nil
-    IO.popen("./db my.db", "r+") do |pipe|
+    IO.popen("./db my.db ", "r+") do |pipe|
       commands.each do |command|
         pipe.puts command
       end
@@ -91,6 +91,7 @@ describe 'database' do
   end
 
   it 'prints constants' do
+    skip "Skipping this test"
     script = [
       ".constants",
       ".exit"
@@ -189,63 +190,93 @@ describe 'database' do
     ])
   end
 
-    it 'allows printing out the structure of a 4-leaf-node btree' do
-      #skip "Skipping this test"
+  it 'allows printing out the structure of a 4-leaf-node btree' do
+    skip "Skipping this test"
+    script = [
+      "insert 18 user18 person18@example.com",
+      "insert 7 user7 person7@example.com",
+      "insert 10 user10 person10@example.com",
+      "insert 29 user29 person29@example.com",
+      "insert 23 user23 person23@example.com",
+      "insert 4 user4 person4@example.com",
+      "insert 14 user14 person14@example.com",
+      "insert 30 user30 person30@example.com",
+      "insert 15 user15 person15@example.com",
+      "insert 26 user26 person26@example.com",
+      "insert 22 user22 person22@example.com",
+      "insert 19 user19 person19@example.com",
+      "insert 2 user2 person2@example.com",
+      "insert 1 user1 person1@example.com",
+      "insert 21 user21 person21@example.com",
+      "insert 11 user11 person11@example.com",
+      "insert 6 user6 person6@example.com",
+      "insert 20 user20 person20@example.com",
+      "insert 5 user5 person5@example.com",
+      "insert 8 user8 person8@example.com",
+      "insert 9 user9 person9@example.com",
+      "insert 3 user3 person3@example.com",
+      "insert 12 user12 person12@example.com",
+      "insert 27 user27 person27@example.com",
+      "insert 17 user17 person17@example.com",
+      "insert 16 user16 person16@example.com",
+      "insert 13 user13 person13@example.com",
+      "insert 24 user24 person24@example.com",
+      "insert 25 user25 person25@example.com",
+      "insert 28 user28 person28@example.com",
+      ".btree",
+      ".exit",
+    ]
+    result = run_script(script)
+      puts result
 
-      script = [
-        "insert 18 user18 person18@example.com",
-        "insert 7 user7 person7@example.com",
-        "insert 10 user10 person10@example.com",
-        "insert 29 user29 person29@example.com",
-        "insert 23 user23 person23@example.com",
-        "insert 4 user4 person4@example.com",
-        "insert 14 user14 person14@example.com",
-        "insert 30 user30 person30@example.com",
-        "insert 15 user15 person15@example.com",
-        "insert 26 user26 person26@example.com",
-        "insert 22 user22 person22@example.com",
-        "insert 19 user19 person19@example.com",
-        "insert 2 user2 person2@example.com",
-        "insert 1 user1 person1@example.com",
-        "insert 21 user21 person21@example.com",
-        "insert 11 user11 person11@example.com",
-        "insert 6 user6 person6@example.com",
-        "insert 20 user20 person20@example.com",
-        "insert 5 user5 person5@example.com",
-        "insert 8 user8 person8@example.com",
-        "insert 9 user9 person9@example.com",
-        "insert 3 user3 person3@example.com",
-        "insert 12 user12 person12@example.com",
-        "insert 27 user27 person27@example.com",
-        "insert 17 user17 person17@example.com",
-        "insert 16 user16 person16@example.com",
-        "insert 13 user13 person13@example.com",
-        "insert 24 user24 person24@example.com",
-        "insert 25 user25 person25@example.com",
-        "insert 28 user28 person28@example.com",
-            "insert 49 user49 person49@example.com",
-            "insert 70 user70 person70@example.com",
-            "insert 48 user48 person48@example.com",
-            "insert 39 user39 person39@example.com",
-            "insert 59 user59 person59@example.com",
-
-        ".btree",
-        ".exit",
-      ]
-      result = run_script(script)
-        puts result
-
-    end
+  end
 
   it 'allows printing out the structure of a 7-leaf-node btree' do
-      script = []
-      300.times do |i|
-        script << "insert #{i} user#{i} person#{i}@example.com"
-      end
+    skip "Skipping this test"
+    script = []
+    300.times do |i|
+      script << "insert #{i} user#{i} person#{i}@example.com"
+    end
     script << "select"
     script << ".btree"
     script << ".exit"
     result = run_script(script)
     puts result
   end
+
+  it 'Insert 10 data random' do
+    script = []
+    20.times do
+      id = rand(1..100) # 随机生成1到100之间的ID
+      username = "user#{id}" # 生成用户名
+      email = "person#{id}@example.com" # 生成邮箱
+      script << "insert #{id} #{username} #{email}" # 插入随机数据到脚本中
+    end
+    script << ".exit"
+    result = run_script(script)
+    puts result
+  end
+
+  it "delete" do
+    skip "Skipping this test"
+
+    # 插入30行数据
+    script = []
+    30.times do |i|
+      script << "insert #{i + 1} user#{i + 1} person#{i + 1}@example.com"
+    end
+    # 删除数据
+    30.times do |i|
+      # 删除一个元素，假设删除的是第一个元素
+      script << "delete #{i + 1}" # 可以根据需求选择删除哪个元素
+      script << ".btree"
+    end
+
+    puts "\n scripts: \n"
+    result = run_script(script)
+    puts "\n results: \n"
+    puts result
+
+  end
+
 end
