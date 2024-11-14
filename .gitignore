@@ -13,3 +13,5 @@ guntls
 gnutls/
 3party/
 apue.3e
+
+*db*

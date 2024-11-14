@@ -244,9 +244,10 @@ describe 'database' do
     puts result
   end
 
-  it 'Insert 10 data random' do
+  it 'Insert 20 data random' do
+    # skip "Skipping this test"
     script = []
-    20.times do
+    15.times do
       id = rand(1..100) # 随机生成1到100之间的ID
       username = "user#{id}" # 生成用户名
       email = "person#{id}@example.com" # 生成邮箱
@@ -259,24 +260,33 @@ describe 'database' do
 
   it "delete" do
     skip "Skipping this test"
-
-    # 插入30行数据
+  
+    # 存储操作的脚本
     script = []
-    30.times do |i|
-      script << "insert #{i + 1} user#{i + 1} person#{i + 1}@example.com"
+    
+    # 随机插入30个数据
+    inserted_data = []  # 用来存储已插入的ID
+    30.times do
+      id = rand(10..9999)  # 生成随机ID
+      user = "user#{id}"
+      email = "person#{id}@example.com"
+      script << "insert #{id} #{user} #{email}"  # 插入脚本
+      inserted_data << id  # 记录插入的ID
     end
-    # 删除数据
-    30.times do |i|
-      # 删除一个元素，假设删除的是第一个元素
-      script << "delete #{i + 1}" # 可以根据需求选择删除哪个元素
-      script << ".btree"
+  
+    # 随机删除30个数据
+    30.times do
+      delete_id = inserted_data.delete_at(rand(inserted_data.length))  # 随机选择并删除一个ID
+      script << "delete #{delete_id}"  # 删除该ID
+      script << ".btree"  # 假设这里是清理或其他操作
     end
-
+    script << ".exit"
+    # 输出生成的脚本并运行
     puts "\n scripts: \n"
     result = run_script(script)
     puts "\n results: \n"
     puts result
-
   end
+  
 
 end
