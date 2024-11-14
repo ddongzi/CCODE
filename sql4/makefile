@@ -10,7 +10,7 @@ SRC = main.c
 CC = gcc
 
 # 编译选项
-CFLAGS = -DDEBUG -g
+CFLAGS = -Wall -Wextra -DDEBUG -g 
 
 # 默认目标
 all: $(TARGET)
