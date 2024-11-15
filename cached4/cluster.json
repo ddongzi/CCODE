@@ -1,9 +1,0 @@
-{
-    "nodes": [
-        {"ip": "127.0.0.1", "port": 12344, "role": "data"},
-        {"ip": "127.0.0.1", "port": 12345, "role": "data"},
-        {"ip": "127.0.0.1", "port": 12346, "role": "data"},
-        {"ip": "127.0.0.1", "port": 12347, "role": "data"},
-        {"ip": "127.0.0.1", "port": 12348, "role": "management"}
-    ]
-}
