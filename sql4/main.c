@@ -71,7 +71,7 @@ void serialize_row(row_t* source, void* destination);
 
 /* B+Tree  原配置*/
 #define BTREE_M 3 // TODO 暂时没有用，因为叶子节点没有限制
-#define PAGE_SIZE  512 // 每个页 4096 个字节
+#define PAGE_SIZE  512 // 每个页  个字节
 #define BTREE_HEIGHT 4
 #define TABLE_MAX_PAGES 85 // 根据M和Height等比求和
 #define INTERNAL_NODE_MAX_CELLS BTREE_M // 
@@ -110,7 +110,6 @@ typedef struct {
 
 /* 对应关系： 一个节点对应一个页。 根节点头部存储子节点page_num来定位。*/
 
-/* B-tree 内部节点存储指针和部分key， 叶子节点存储key和val */
 #define NODE_INTERNAL 0
 #define NODE_LEAF 1
 
@@ -607,23 +606,9 @@ void internal_node_remove_cell(table_t* table, internal_node_t *node, uint8_t ce
     
 }
 
-/**
- * @brief 内部结点的孩子指向摆动
- * 
- * @param node 
- * @param from 从一个无效位置摆动
- * @param wave_left 向左摆动
- */
-void internal_node_wave(table_t *table, internal_node_t *node, uint8_t from ,bool wave_left)
-{
-
-
-    
-}
 
 /**
- * @brief 合并内部兄弟结点，然后
- *  ??? 和叶子结点合并删除没区别？
+ * @brief 合并内部兄弟结点，移除cellnum
  * @param node 
  * @param merge_to_left 
  */
@@ -704,10 +689,8 @@ void internal_node_remove(table_t *table, internal_node_t *node, uint8_t cell_nu
         internal_node_remove_cell(table, node, cell_num);
         return;
     } 
-    //TODO
     // 如果是根节点,不够删除，即只有1个cell，
     if (node->meta.is_root) {
-
         common_header_t meta = node->meta;
         node_t *new_root = (node_t*)get_page(table->pager, node->right_child_page_num);
         memcpy(node, new_root, sizeof(node_t));
@@ -808,7 +791,6 @@ void internal_node_remove(table_t *table, internal_node_t *node, uint8_t cell_nu
         node_t *temp_node = (node_t*)get_page(table->pager, prev->cells[prev->num_cells - 1].child_page_num);
         internal_node_remove_cell(table, prev, prev->num_cells - 1);
         prev->right_child_page_num = ((common_header_t *)temp_node)->page_num;
-        // TODO?
         update_internal_node_key(parent, old_max_key, get_node_max_key(table->pager, prev));
         return;
     }
@@ -844,7 +826,6 @@ void initialize_internal_node(internal_node_t *node, uint8_t page_num)
 
 }
 
-/*=================leaf node ================================*/
 
 /* 初始化叶子节点， cell_num 为0*/
 void initialize_leaf_node(leaf_node_t *node, uint8_t page_num)
@@ -1619,11 +1600,13 @@ meta_cmd_res do_meta_command(input_buffer_t *input_buffer, table_t *table)
         printf("\t.exit [] exit\n");
         printf("\t.constants [] constants\n");
         printf("\t.btree [] btree\n");
+        printf("\t.table [] btree\n");
         printf("\t.help [] help\n");
 
         printf("SQL command:\n");
         printf("\tselect [index][name][email] select\n");
         printf("\tinsert [] insert\n");
+        printf("\tdelete [index] insert\n");
 
         return META_COMMAND_SUCCESS;
     } else {
