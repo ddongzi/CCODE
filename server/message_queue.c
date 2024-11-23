@@ -1,6 +1,6 @@
 #include "message_queue.h"
 #include <assert.h>
-#include "mutex.h"
+#include "pthread.h"
 
 message_queue_t * message_queue_create(uint32_t n_msgs, uint16_t flags)
 {

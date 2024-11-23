@@ -30,6 +30,9 @@ typedef struct ThreadPool {
 
     int shutdown;      // 线程池关闭状态
 } threadpool_t;
+void threadpool_init();
+void threadpool_run();
+
 threadpool_t *threadpool_create();
 void threadpool_destroy();
 void threadpool_add_task(task_func* func, void* arg, thread_role_t type);

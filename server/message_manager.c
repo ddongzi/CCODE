@@ -2,6 +2,7 @@
 #include "log.h"
 #include "message_queue.h"
 #include <assert.h>
+#include "threadpool.h"
 
 // define, enum
 enum message_allocation_policy {
@@ -29,6 +30,11 @@ static uint32_t n_perm_msgs = MSG_N_PERM_MSG;
 static bool check_msg_flags(void* msg, void* flags)
 {
     return message_flags((message_t*)msg) & *(uint16_t*)flags;
+}
+static void task_recv_msg(void* arg)
+{
+    message_t* msg = (message_t*) arg;
+    LOG_INFO("task recv msg callback, TID[%lu], %u, %s", pthread_self() ,msg->original_seqno, msg->body);
 }
 
 
@@ -149,7 +155,6 @@ size_t message_manager_destroy_msgs(message_queue_t* queue, size_t nmsgs, uint16
 
 void message_manager_add_inmsg(const message_t* msg)
 {
-    message_queue_add(in_msg_queue, msg);
-    // TODO 需要通知工作线程
-    
+    void* arg = msg;    
+    threadpool_add_task(task_recv_msg, msg, THREAD_ROLE_WORKER);
 }

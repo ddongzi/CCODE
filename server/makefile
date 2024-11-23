@@ -3,11 +3,15 @@ TARGET = tcpserver tcpclient
 
 # 目标文件目录
 BUILD_DIR = build
-OBJ_SERVER = $(addprefix $(BUILD_DIR)/, array.o connect_manager.o connection_table.o connection.o log.o message_manager.o message_queue.o message.o mutex.o server.o socket.o queue.o)
+OBJ_SERVER = $(addprefix $(BUILD_DIR)/, array.o connect_manager.o connection_table.o connection.o \
+	log.o message_manager.o message_queue.o message.o \
+	queue.o server.o socket.o thread.o threadpool.o )
 OBJ_CLIENT = $(addprefix $(BUILD_DIR)/, client.o message.o log.o)
 
 # 源文件
-SRC_SERVER = array.c connect_manager.c connection_table.c connection.c log.c message_manager.c message_queue.c message.c mutex.c server.c socket.c queue.c
+SRC_SERVER = array.c connect_manager.c connection_table.c connection.c \
+	log.c message_manager.c message_queue.c message.c \
+	queue.c server.c socket.c thread.c threadpool.c 
 SRC_CLIENT = client.c
 
 # 编译器

@@ -164,8 +164,8 @@ void threadpool_destroy()
 /**
  * @brief 生产者，添加task
  * 
- * @param [in] func :void f(void *arg)
- * @param [in] arg 
+ * @param [in] func :void f(void *arg) 任务函数
+ * @param [in] arg : arg 函数参数
  * @param [in] type ：设置对应thread role
  */
 void threadpool_add_task(task_func* func, void* arg, thread_role_t type)
@@ -186,11 +186,4 @@ void threadpool_add_task(task_func* func, void* arg, thread_role_t type)
 }
 
 
-
-// 任务
-void sample_task(void* arg)
-{
-    int* num = (int*) arg;
-    LOG_INFO("Tid[%lu]\t Task %d is being executed", pthread_self(), *num);
-}
 
