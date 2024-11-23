@@ -245,7 +245,7 @@ describe 'database' do
   end
 
   it 'Insert 20 data random' do
-    # skip "Skipping this test"
+    skip "Skipping this test"
     script = []
     15.times do
       id = rand(1..100) # 随机生成1到100之间的ID
@@ -285,6 +285,21 @@ describe 'database' do
     puts "\n scripts: \n"
     result = run_script(script)
     puts "\n results: \n"
+    puts result
+  end
+  
+  it 'Insert 80 random log data' do
+    # skip "Skipping this test"
+    script = []
+    80.times do
+      timestamp = Time.now.to_i + rand(-10000..10000) # 随机生成当前时间附近的 time_t 值
+      source = "source#{rand(1..10)}" # 随机生成1到10之间的日志来源
+      log_content = "Logmessage#{rand(1000..9999)}" # 随机生成日志内容
+      script << "insert #{timestamp} #{source} #{log_content}" # 插入数据到脚本中
+    end
+    script << ".exit"
+    puts script
+    result = run_script(script)
     puts result
   end
   

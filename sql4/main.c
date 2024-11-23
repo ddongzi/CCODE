@@ -12,6 +12,7 @@
 #include <assert.h>
 #include <stddef.h>
 #include <sys/stat.h>
+#include <time.h>
 
 #define FIELD_SIZE(type, field) sizeof(((type*)0)->field)
 #define FIELD_OFFSET(type, field) offsetof(type, field)
@@ -35,7 +36,6 @@ typedef enum {
     PREPARE_UNRECOGNIZED_STATEMENT,
     PREPARE_SYNTAX_ERROR,
     PREPARE_STRING_TOO_LONG,
-    PREPARE_NEGATIVE_ID
 } prepare_res_type;
 
 /*sql 命令类型*/
@@ -45,12 +45,12 @@ typedef enum {
     STATEMENT_DELETE
 } statement_type;
 
-#define COLUMN_USERNAME_SIZE 32
-#define COLUMN_EMAIL_SIZE 32
+#define COLUMN_SOURCE_SIZE 32
+#define COLUMN_CONTENT_SIZE 128
 typedef struct {
-    uint32_t id;
-    char user_name[COLUMN_USERNAME_SIZE + 1];
-    char email[COLUMN_EMAIL_SIZE + 1];
+    time_t time;    // 日志时间
+    char source[COLUMN_SOURCE_SIZE + 1];    // 日志来源
+    char content[COLUMN_CONTENT_SIZE + 1];  // 日志内容
 } row_t;
 
 typedef struct {
@@ -71,9 +71,9 @@ void serialize_row(row_t* source, void* destination);
 
 /* B+Tree  原配置*/
 #define BTREE_M 3 // TODO 暂时没有用，因为叶子节点没有限制
-#define PAGE_SIZE  512 // 每个页  个字节
-#define BTREE_HEIGHT 4
-#define TABLE_MAX_PAGES 85 // 根据M和Height等比求和
+#define PAGE_SIZE  1024 // 每个页  个字节
+#define BTREE_HEIGHT 4  // 三层 0，1，2， 3
+#define TABLE_MAX_PAGES 160 // 根据M和Height等比求和
 #define INTERNAL_NODE_MAX_CELLS BTREE_M // 
 #define INTERNAL_NODE_MIN_CELLS 1 // 最小为1个cell，两个孩子
 #define LEAF_NODE_MAX_CELLS BTREE_M
@@ -1313,11 +1313,15 @@ void pager_flush(pager_t *pager, uint8_t page_num)
 void db_close(table_t *table)
 {
     pager_t *pager = table->pager;
+    assert(pager);
+    assert(table);
+
     for (uint32_t i = 0; i < pager->num_pages; ++i) {
         if (pager->pages[i] == NULL) {
             continue;
         }
         pager_flush(pager, i);
+        assert(pager->pages[i]);
         free(pager->pages[i]);
         pager->pages[i] = NULL;
     }
@@ -1366,23 +1370,23 @@ void * cursor_value(cursor_t *cursor)
 }
 
 /* row_t 落入内存*/
-void serialize_row(row_t* source, void* destination)
+void serialize_row(row_t* src, void* destination)
 {
-    memcpy(destination + FIELD_OFFSET(row_t, id), &(source->id), FIELD_SIZE(row_t, id));
-    strncpy(destination + FIELD_OFFSET(row_t, user_name), source->user_name, FIELD_SIZE(row_t, user_name));
-    strncpy(destination + FIELD_OFFSET(row_t, email), source->email, FIELD_SIZE(row_t, email));
+    memcpy(destination + FIELD_OFFSET(row_t, time), &(src->time), FIELD_SIZE(row_t, time));
+    strncpy(destination + FIELD_OFFSET(row_t, source), src->source, FIELD_SIZE(row_t, source));
+    strncpy(destination + FIELD_OFFSET(row_t, content), src->content, FIELD_SIZE(row_t, content));
 }
 
 void print_row(row_t *row)
 {
-    printf("(%d, %s, %s)\n", row->id, row->user_name, row->email);
+    printf("(%d, %s, %s)\n", row->time, row->source, row->content);
 }
 
 /* 从内存读,  source 为 一行的起始地址*/
-void deserialize_row(void* source, row_t* destination) {
-    memcpy(&(destination->id), source +  FIELD_OFFSET(row_t, id), FIELD_SIZE(row_t, id));
-    memcpy(&(destination->user_name), source + FIELD_OFFSET(row_t, user_name), FIELD_SIZE(row_t, user_name));
-    memcpy(&(destination->email), source +  FIELD_OFFSET(row_t, email),  FIELD_SIZE(row_t, email));
+void deserialize_row(void* src, row_t* destination) {
+    memcpy(&(destination->time), src +  FIELD_OFFSET(row_t, time), FIELD_SIZE(row_t, time));
+    memcpy(&(destination->source), src + FIELD_OFFSET(row_t, source), FIELD_SIZE(row_t, source));
+    memcpy(&(destination->content), src +  FIELD_OFFSET(row_t, content),  FIELD_SIZE(row_t, content));
 }
 
 /* 执行select， 从table.page内存读出*/
@@ -1403,7 +1407,7 @@ execute_res execute_select(sql_statement * statement, table_t * table)
 execute_res execute_insert(sql_statement* statement, table_t* table)
 {
     row_t* row = &(statement->row);
-    uint32_t key = row->id;
+    uint32_t key = row->time;
     cursor_t *cursor = table_find(table, key);
     
     leaf_node_t* node = (leaf_node_t*)get_page(table->pager, cursor->page_num);
@@ -1414,7 +1418,7 @@ execute_res execute_insert(sql_statement* statement, table_t* table)
         }
     }
 
-    leaf_node_insert(cursor, row->id, row);
+    leaf_node_insert(cursor, row->time, row);
     free(cursor);
     return EXECUTE_SUCCESS;
 }
@@ -1428,8 +1432,8 @@ execute_res execute_insert(sql_statement* statement, table_t* table)
  */
 execute_res execute_delete(sql_statement *statement, table_t *table)
 {
-    uint32_t id = statement->row.id;
-    uint32_t key = id;
+    time_t time = statement->row.time;
+    time_t key = time;
 
     cursor_t* cursor =table_find(table, key);
 
@@ -1520,26 +1524,24 @@ prepare_res_type prepare_insert(input_buffer_t* input_buffer, sql_statement *sta
 {
     statement->type = STATEMENT_INSERT;
     char *keyword = strtok(input_buffer->buffer, " ");
-    char *id_str = strtok(NULL, " ");
-    char *username = strtok(NULL, " ");
-    char *email = strtok(NULL, " ");
+    char *time_str = strtok(NULL, " ");
+    char *source = strtok(NULL, " ");
+    char *content = strtok(NULL, " ");
 
-    if (id_str == NULL || username == NULL || email == NULL) {
+    if (time_str == NULL || source == NULL || content == NULL) {
         return PREPARE_SYNTAX_ERROR;
     }
-    int id = atoi(id_str);
-    if (id < 0) {
-        return PREPARE_NEGATIVE_ID;
-    }
-    if (strlen(username) > COLUMN_USERNAME_SIZE) {
+    time_t time = atoi(time_str);
+
+    if (strlen(source) > COLUMN_SOURCE_SIZE) {
         return PREPARE_STRING_TOO_LONG;
     }
-    if (strlen(email) > COLUMN_EMAIL_SIZE) {
+    if (strlen(content) > COLUMN_CONTENT_SIZE) {
         return PREPARE_STRING_TOO_LONG;
     }
-    statement->row.id = id;
-    strcpy(statement->row.user_name, username);
-    strcpy(statement->row.email, email);
+    statement->row.time = time;
+    strcpy(statement->row.source, source);
+    strcpy(statement->row.content, content);
     return PREPARE_SUCCESS;
 }
 
@@ -1547,12 +1549,10 @@ prepare_res_type prepare_delete(input_buffer_t *input_buffer, sql_statement *sta
 {
     statement->type = STATEMENT_DELETE;
     char *keyword = strtok(input_buffer->buffer, " ");
-    char *id_str = strtok(NULL, " ");
-    int id = atoi(id_str);
-    if (id < 0) {
-        return PREPARE_NEGATIVE_ID;
-    }
-    statement->row.id = id;
+    char *time_str = strtok(NULL, " ");
+    time_t time = atoi(time_str);
+
+    statement->row.time = time;
     return PREPARE_SUCCESS;
 }
 /* 填充 statement*/
@@ -1604,9 +1604,9 @@ meta_cmd_res do_meta_command(input_buffer_t *input_buffer, table_t *table)
         printf("\t.help [] help\n");
 
         printf("SQL command:\n");
-        printf("\tselect [index][name][email] select\n");
-        printf("\tinsert [] insert\n");
-        printf("\tdelete [index] insert\n");
+        printf("\tselect []\n");
+        printf("\tinsert [time_t][source][content] \n");
+        printf("\tdelete [index]\n");
 
         return META_COMMAND_SUCCESS;
     } else {
@@ -1625,6 +1625,8 @@ input_buffer_t* new_input_buffer()
 }
 void close_input_buffer(input_buffer_t* input_buffer)
 {
+    assert(input_buffer);
+    assert(input_buffer->buffer);
     free(input_buffer->buffer);
     free(input_buffer);
 }
@@ -1652,12 +1654,16 @@ void print_constants() {
 
     printf("Page size: %d\n", PAGE_SIZE);
     printf("Row size: %d\n", sizeof(row_t));
-    printf("max rows in leafnode：%u\n", (PAGE_SIZE - sizeof(common_header_t)) / sizeof(leaf_node_cell_t));
+
+    printf("max rows in leafnode (theory)：%u\n", (PAGE_SIZE - sizeof(common_header_t)) / sizeof(leaf_node_cell_t));
+    printf("Total rows(theory): %u\n", LEAF_NODE_MAX_CELLS *  (PAGE_SIZE - sizeof(common_header_t)) / sizeof(leaf_node_cell_t));
+
+    printf("internal node numbers: %d\n");
+    printf("leaf node numbers: 27\n");
 
     printf("INTERNAL_NODE_MAX_CELLS : %d\n", INTERNAL_NODE_MAX_CELLS);
     printf("LEAF_NODE_MAX_CELLS: %d\n", LEAF_NODE_MAX_CELLS);
     printf("LEAF_NODE_MIN_CELLS: %d\n", LEAF_NODE_MIN_CELLS);
-
     printf("LEAF_NODE_CELL_SIZE: %d\n", sizeof(leaf_node_cell_t));
     
 }
@@ -1767,7 +1773,7 @@ SQLite version 3.16.0 2016-11-04 19:09:39
 Enter ".help" for usage hints.
 Connected to a transient in-memory database.
 Use ".open FILENAME" to reopen on a persistent database.
-sqlite> create table users (id int, username varchar(255), email varchar(255));
+sqlite> create table users (id int, source varchar(255), content varchar(255));
 sqlite> .tables
 users
 sqlite> .exit
@@ -1814,9 +1820,7 @@ int main(int argc, char *argv[])
             case PREPARE_STRING_TOO_LONG:
                 printf("String is too long.\n");
                 continue;
-            case PREPARE_NEGATIVE_ID:
-                printf("ID must be positive.\n");
-                continue;
+
         }
 
         switch (execute_statement(&statement, table)) {
