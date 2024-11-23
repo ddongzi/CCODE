@@ -151,4 +151,5 @@ void message_manager_add_inmsg(const message_t* msg)
 {
     message_queue_add(in_msg_queue, msg);
     // TODO 需要通知工作线程
+    
 }

@@ -31,7 +31,7 @@ static void add_tail(queue_node_t** headp, queue_node_t** tailp,queue_node_t *no
  * @param [in] tailp 
  * @return queue_node_t* 
  */
-static queue_node_t *get_head(queue_node_t** headp, queue_node_t** tailp)
+static queue_node_t *remove_head(queue_node_t** headp, queue_node_t** tailp)
 {
     queue_node_t *node = NULL;
     if (*headp) {
@@ -81,7 +81,7 @@ void queue_destroy(queue_t* queue)
     assert(queue);
     assert(queue->n_entries == 0);    // 释放queue时候，保证queue内没有元素
     while (queue->n_perm_nodes --) {
-        free(get_head(&queue->permhead, &queue->permtail));
+        free(remove_head(&queue->permhead, &queue->permtail));
     }
     free(queue);
 }
@@ -94,18 +94,25 @@ size_t  queue_size(const queue_t* queue)
 {
     return queue->n_entries;
 }
+/**
+ * @brief 
+ * 
+ * @param [in] queue 
+ * @param [in] entry : 实体指针
+ */
 void queue_add(queue_t* queue, const void *entry)
 {
     queue_node_t* newnode;
     assert(queue);
 
     // 从永久结点（空闲）队列拿一个空闲的
-    if (!(newnode = get_head(&queue->permhead, &queue->permtail))) {
+    if (!(newnode = remove_head(&queue->permhead, &queue->permtail))) {
         newnode = (queue_node_t*)calloc(1, sizeof(queue_node_t));
         assert(newnode);
     }
     newnode->entry = entry;
     add_tail(&queue->head, &queue->tail, newnode);
+    queue->n_entries++;
 }
 
 /**
@@ -155,7 +162,7 @@ void* queue_remove_head(queue_t* queue)
     void* entry = NULL;
     queue_node_t* node;
     
-    if (!(node = get_head(&queue->head, &queue->tail))) {
+    if (!(node = remove_head(&queue->head, &queue->tail))) {
         // 队列空
         return NULL;
     }
@@ -163,4 +170,15 @@ void* queue_remove_head(queue_t* queue)
     dispose_node(queue, node);
     queue->n_entries--;
     return entry;
+}
+/**
+ * @brief 获取第一个元素
+ * 
+ * @param [in] queue 
+ * @return void* 
+ */
+void* queue_head(queue_t* queue)
+{
+    assert(queue);
+    return queue->head->entry;
 }

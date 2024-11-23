@@ -40,5 +40,6 @@ size_t  queue_size(const queue_t* queue);
 void queue_add(queue_t* queue, const void *entry);
 void* queue_remove(queue_t* queue, queue_find_func* func, void* arg);
 void* queue_remove_head(queue_t* queue);
+void* queue_head(queue_t* queue);
 
 #endif
